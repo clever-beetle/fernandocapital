@@ -84,7 +84,7 @@ export function GoldChart({ data, currentPrice, isRupiah = false }: GoldChartPro
               tickFormatter={formatAxis}
             />
             <Tooltip 
-              formatter={(value: number) => [formatPrice(value), "Harga"]}
+              formatter={(value: any) => [formatPrice(value), "Harga"]}
               contentStyle={{ 
                 backgroundColor: "hsl(var(--background))", 
                 borderColor: "hsl(var(--border))",

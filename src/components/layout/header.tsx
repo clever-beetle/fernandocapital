@@ -12,6 +12,7 @@ export function Header() {
         <div className="flex items-center gap-4 md:gap-12">
           {/* Mobile Menu */}
           <Sheet>
+            {/* @ts-expect-error - asChild is missing from Radix UI DialogTrigger types locally */}
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
                 <Menu className="h-6 w-6" />

@@ -13,11 +13,11 @@ export async function GET(request: Request) {
 
   try {
     // 1. Fetch live Gold Futures (GC=F) from Yahoo Finance
-    const quoteGold = await yahooFinance.quote('GC=F');
+    const quoteGold = (await yahooFinance.quote('GC=F')) as any;
     const currentPriceUsd = quoteGold.regularMarketPrice;
 
     // 2. Fetch live USD to IDR exchange rate
-    const quoteIdr = await yahooFinance.quote('IDR=X');
+    const quoteIdr = (await yahooFinance.quote('IDR=X')) as any;
     const exchangeRateIdr = quoteIdr.regularMarketPrice;
 
     if (!currentPriceUsd || !exchangeRateIdr) {
