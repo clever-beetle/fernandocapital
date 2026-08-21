@@ -5,7 +5,8 @@ import { db } from "@/db";
 import { goldPrices } from "@/db/schema";
 import { desc } from "drizzle-orm";
 
-export const revalidate = 60; // Revalidate page every 60 seconds
+// Force dynamic rendering to prevent static generation from hitting the DB at build time
+export const dynamic = 'force-dynamic';
 
 // Helper untuk format Rupiah
 const formatRupiah = (number: number) => {
