@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
-import yahooFinance from 'yahoo-finance2';
 import { db } from '@/db';
 import { goldPrices } from '@/db/schema';
+import yahooFinance from 'yahoo-finance2';
+
+const yf = new yahooFinance();
 
 // Vercel Cron will hit this URL every 10 minutes
 export async function GET(request: Request) {
@@ -13,11 +15,11 @@ export async function GET(request: Request) {
 
   try {
     // 1. Fetch live Gold Futures (GC=F) from Yahoo Finance
-    const quoteGold = (await yahooFinance.quote('GC=F')) as any;
+    const quoteGold = (await yf.quote('GC=F')) as any;
     const currentPriceUsd = quoteGold.regularMarketPrice;
 
     // 2. Fetch live USD to IDR exchange rate
-    const quoteIdr = (await yahooFinance.quote('IDR=X')) as any;
+    const quoteIdr = (await yf.quote('IDR=X')) as any;
     const exchangeRateIdr = quoteIdr.regularMarketPrice;
 
     if (!currentPriceUsd || !exchangeRateIdr) {
