@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GoldChart } from "@/components/dashboard/gold-chart";
-import { ArrowUpRight, DollarSign, Activity, Coins } from "lucide-react";
+import { ArrowUpRight, DollarSign, Activity, Coins, ArrowDownUp } from "lucide-react";
 import { db } from "@/db";
 import { goldPrices } from "@/db/schema";
 import { desc } from "drizzle-orm";
@@ -110,9 +110,9 @@ export default async function Dashboard() {
       {/* Main Content Grid */}
       {/* Main Content Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="flex flex-col gap-6 lg:col-span-2">
+        <div className="flex flex-col gap-6 lg:col-span-2 h-full">
           {/* Gold Tracker Section */}
-          <section id="tracker" className="h-[550px]">
+          <section id="tracker" className="h-full min-h-[550px]">
             <GoldChart data={chartDataIdr} currentPrice={currentAntamPrice} isRupiah={true} />
           </section>
         </div>
@@ -124,7 +124,7 @@ export default async function Dashboard() {
             <Card className="shadow-lg bg-gradient-to-br from-card/80 to-primary/5 backdrop-blur-xl border-border/50">
               <CardHeader className="pb-3">
                 <CardTitle className="text-lg font-bold flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-primary" />
+                  <Coins className="h-5 w-5 text-primary" />
                   Kalkulator Cepat
                 </CardTitle>
                 <CardDescription>Estimasi konversi dana ke emas fisik</CardDescription>
@@ -138,9 +138,9 @@ export default async function Dashboard() {
                       <input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-primary/50 text-foreground" placeholder="10.000.000" disabled />
                     </div>
                   </div>
-                  <div className="flex justify-center -my-2 relative z-10">
-                    <div className="bg-background border border-white/10 rounded-full p-1">
-                      <Activity className="h-4 w-4 text-muted-foreground rotate-90" />
+                  <div className="flex justify-center -my-3 relative z-10">
+                    <div className="bg-card border border-white/10 rounded-full p-2 shadow-lg">
+                      <ArrowDownUp className="h-4 w-4 text-primary" />
                     </div>
                   </div>
                   <div className="space-y-2">
