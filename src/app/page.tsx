@@ -125,7 +125,9 @@ export default async function Dashboard() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-xl font-bold flex items-center justify-between">
                   <span>Harga Fisik Antam</span>
-                  <span className="text-xs font-normal px-2 py-1 bg-primary/20 text-primary rounded-full">21 Aug 2026</span>
+                  <span className="text-xs font-normal px-2 py-1 bg-primary/20 text-primary rounded-full">
+                    {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  </span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -136,19 +138,23 @@ export default async function Dashboard() {
                     <div className="text-right">+Pajak 0.25%</div>
                   </div>
                   {[
-                    { weight: "0.5 gr", price: 1412500, tax: 1416031 },
-                    { weight: "1 gr", price: 2725000, tax: 2731813 },
-                    { weight: "5 gr", price: 13400000, tax: 13433500 },
-                    { weight: "10 gr", price: 26745000, tax: 26811863 },
-                    { weight: "50 gr", price: 133395000, tax: 133728488 },
-                    { weight: "100 gr", price: 266712000, tax: 267378780 },
-                  ].map((row, i) => (
-                    <div key={i} className="grid grid-cols-3 text-sm font-medium items-center py-2 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors rounded-md px-1">
-                      <div className="text-foreground">{row.weight}</div>
-                      <div className="text-right text-muted-foreground">{formatRupiah(row.price).replace('Rp', '')}</div>
-                      <div className="text-right text-primary">{formatRupiah(row.tax).replace('Rp', '')}</div>
-                    </div>
-                  ))}
+                    { label: "0.5 gr", weight: 0.5, multiplier: 1.0367 },
+                    { label: "1 gr", weight: 1, multiplier: 1.0 },
+                    { label: "5 gr", weight: 5, multiplier: 0.9835 },
+                    { label: "10 gr", weight: 10, multiplier: 0.9815 },
+                    { label: "50 gr", weight: 50, multiplier: 0.9790 },
+                    { label: "100 gr", weight: 100, multiplier: 0.9788 },
+                  ].map((tier, i) => {
+                    const basePrice = currentAntamPrice * tier.weight * tier.multiplier;
+                    const taxPrice = basePrice * 1.0025;
+                    return (
+                      <div key={i} className="grid grid-cols-3 text-sm font-medium items-center py-2 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors rounded-md px-1">
+                        <div className="text-foreground">{tier.label}</div>
+                        <div className="text-right text-muted-foreground">{currentAntamPrice > 0 ? formatRupiah(basePrice).replace('Rp', '') : '---'}</div>
+                        <div className="text-right text-primary">{currentAntamPrice > 0 ? formatRupiah(taxPrice).replace('Rp', '') : '---'}</div>
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
