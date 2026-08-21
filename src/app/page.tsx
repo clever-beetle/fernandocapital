@@ -108,35 +108,69 @@ export default async function Dashboard() {
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid gap-10 lg:grid-cols-2">
-        <div className="flex flex-col gap-10">
+      {/* Main Content Grid */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="flex flex-col gap-6 lg:col-span-2">
           {/* Gold Tracker Section */}
-          <section id="tracker">
+          <section id="tracker" className="h-[500px]">
             <GoldChart data={chartDataIdr} currentPrice={currentAntamPrice} isRupiah={true} />
           </section>
         </div>
 
-        {/* Financial News Section */}
-        <div className="relative z-10">
-          <section id="news" className="h-full">
-            <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50 h-full">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold">Market Intelligence</CardTitle>
-                <CardDescription className="text-base">Real-time updates on global markets.</CardDescription>
+        {/* Right Sidebar */}
+        <div className="flex flex-col gap-6 relative z-10 h-full">
+          {/* Antam Physical Price Table */}
+          <section id="pricelist">
+            <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-xl font-bold flex items-center justify-between">
+                  <span>Harga Fisik Antam</span>
+                  <span className="text-xs font-normal px-2 py-1 bg-primary/20 text-primary rounded-full">21 Aug 2026</span>
+                </CardTitle>
               </CardHeader>
-              <CardContent className="grid gap-4">
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-3 text-xs text-muted-foreground uppercase tracking-wider mb-2">
+                    <div>Berat</div>
+                    <div className="text-right">Dasar</div>
+                    <div className="text-right">+Pajak 0.25%</div>
+                  </div>
+                  {[
+                    { weight: "0.5 gr", price: 1412500, tax: 1416031 },
+                    { weight: "1 gr", price: 2725000, tax: 2731813 },
+                    { weight: "5 gr", price: 13400000, tax: 13433500 },
+                    { weight: "10 gr", price: 26745000, tax: 26811863 },
+                    { weight: "50 gr", price: 133395000, tax: 133728488 },
+                    { weight: "100 gr", price: 266712000, tax: 267378780 },
+                  ].map((row, i) => (
+                    <div key={i} className="grid grid-cols-3 text-sm font-medium items-center py-2 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors rounded-md px-1">
+                      <div className="text-foreground">{row.weight}</div>
+                      <div className="text-right text-muted-foreground">{formatRupiah(row.price).replace('Rp', '')}</div>
+                      <div className="text-right text-primary">{formatRupiah(row.tax).replace('Rp', '')}</div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* Financial News Section */}
+          <section id="news" className="flex-1">
+            <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50 h-full">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-xl font-bold">Market Intelligence</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-3">
                 {[
                   { title: "Fed signals potential rate cuts by year-end", time: "2 hours ago", source: "Bloomberg" },
                   { title: "Tech stocks rally as AI investments surge", time: "5 hours ago", source: "CNBC" },
                   { title: "Gold hits new all-time high amid inflation fears", time: "1 day ago", source: "Reuters" },
-                  { title: "Consumer spending remains resilient in Q2", time: "1 day ago", source: "Wall Street Journal" },
                 ].map((news, i) => (
-                  <div key={i} className="group flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-4 transition-all hover:bg-white/10 hover:border-primary/30 cursor-pointer">
+                  <div key={i} className="group flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-3 transition-all hover:bg-white/10 hover:border-primary/30 cursor-pointer">
                     <div className="space-y-1">
-                      <p className="text-base font-medium text-foreground group-hover:text-primary transition-colors">{news.title}</p>
-                      <p className="text-xs text-muted-foreground uppercase tracking-wider">{news.source} • {news.time}</p>
+                      <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2">{news.title}</p>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{news.source} • {news.time}</p>
                     </div>
-                    <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all" />
                   </div>
                 ))}
               </CardContent>
