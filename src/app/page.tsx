@@ -48,16 +48,16 @@ export default async function Dashboard() {
       <div className="grid gap-6 md:grid-cols-4 relative z-10">
         <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50 hover:border-primary/30 transition-colors">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Portfolio Value</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">Kinerja Emas (YTD)</CardTitle>
             <div className="p-2 bg-primary/10 rounded-lg">
-              <DollarSign className="h-4 w-4 text-primary" />
+              <Activity className="h-4 w-4 text-primary" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl md:text-3xl font-bold text-foreground">{formatRupiah(450000000)}</div>
+            <div className="text-2xl md:text-3xl font-bold text-foreground">+24.8%</div>
             <p className="text-sm text-chart-2 font-medium mt-2 flex items-center gap-1">
               <ArrowUpRight className="h-3 w-3" />
-              +20.1% dari bulan lalu
+              Mengungguli IHSG
             </p>
           </CardContent>
         </Card>
@@ -112,16 +112,55 @@ export default async function Dashboard() {
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="flex flex-col gap-6 lg:col-span-2">
           {/* Gold Tracker Section */}
-          <section id="tracker" className="h-[500px]">
+          <section id="tracker" className="h-[550px]">
             <GoldChart data={chartDataIdr} currentPrice={currentAntamPrice} isRupiah={true} />
           </section>
         </div>
 
         {/* Right Sidebar */}
         <div className="flex flex-col gap-6 relative z-10 h-full">
+          {/* Quick Converter Widget */}
+          <section id="converter">
+            <Card className="shadow-lg bg-gradient-to-br from-card/80 to-primary/5 backdrop-blur-xl border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg font-bold flex items-center gap-2">
+                  <Activity className="h-5 w-5 text-primary" />
+                  Kalkulator Cepat
+                </CardTitle>
+                <CardDescription>Estimasi konversi dana ke emas fisik</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Punya Dana (IDR)</label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">Rp</span>
+                      <input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-primary/50 text-foreground" placeholder="10.000.000" disabled />
+                    </div>
+                  </div>
+                  <div className="flex justify-center -my-2 relative z-10">
+                    <div className="bg-background border border-white/10 rounded-full p-1">
+                      <Activity className="h-4 w-4 text-muted-foreground rotate-90" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Dapat Emas (Gram)</label>
+                    <div className="relative">
+                      <input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg py-2 pl-3 pr-10 text-sm focus:outline-none focus:border-primary/50 text-foreground" placeholder="3.56" disabled />
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">gr</span>
+                    </div>
+                  </div>
+                  <button className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/20 py-2 rounded-lg text-sm font-semibold transition-colors mt-2">
+                    Hitung Akurat
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
           {/* Antam Physical Price Table */}
-          <section id="pricelist">
-            <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50">
+          <section id="pricelist" className="flex-1">
+            <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50 h-full">
               <CardHeader className="pb-3">
                 <CardTitle className="text-xl font-bold flex items-center justify-between">
                   <span>Harga Fisik Antam</span>
@@ -159,30 +198,36 @@ export default async function Dashboard() {
               </CardContent>
             </Card>
           </section>
-
-          {/* Financial News Section */}
-          <section id="news" className="flex-1">
-            <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50 h-full">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-xl font-bold">Market Intelligence</CardTitle>
-              </CardHeader>
-              <CardContent className="grid gap-3">
-                {[
-                  { title: "Fed signals potential rate cuts by year-end", time: "2 hours ago", source: "Bloomberg" },
-                  { title: "Tech stocks rally as AI investments surge", time: "5 hours ago", source: "CNBC" },
-                  { title: "Gold hits new all-time high amid inflation fears", time: "1 day ago", source: "Reuters" },
-                ].map((news, i) => (
-                  <div key={i} className="group flex items-center justify-between rounded-xl border border-white/5 bg-white/5 p-3 transition-all hover:bg-white/10 hover:border-primary/30 cursor-pointer">
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-2">{news.title}</p>
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{news.source} • {news.time}</p>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </section>
         </div>
+      </div>
+
+      {/* Financial News Section (Moved to Bottom, Full Width) */}
+      <div className="relative z-10 mt-6">
+        <section id="news">
+          <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">Market Intelligence</CardTitle>
+              <CardDescription className="text-base">Real-time updates on global markets.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {[
+                { title: "Fed signals potential rate cuts by year-end", time: "2 hours ago", source: "Bloomberg" },
+                { title: "Tech stocks rally as AI investments surge", time: "5 hours ago", source: "CNBC" },
+                { title: "Gold hits new all-time high amid inflation fears", time: "1 day ago", source: "Reuters" },
+                { title: "Consumer spending remains resilient in Q2", time: "1 day ago", source: "WSJ" },
+              ].map((news, i) => (
+                <div key={i} className="group flex flex-col justify-between rounded-xl border border-white/5 bg-white/5 p-5 transition-all hover:bg-white/10 hover:border-primary/30 cursor-pointer min-h-[120px]">
+                  <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-3 mb-4">{news.title}</p>
+                  <div className="flex items-center justify-between mt-auto">
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{news.source} • {news.time}</p>
+                    <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all" />
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </section>
+      </div>
       </div>
     </div>
   );
