@@ -1,23 +1,36 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GoldChart } from "@/components/dashboard/gold-chart";
-import { ArrowUpRight, DollarSign, Activity } from "lucide-react";
+import { ArrowUpRight, DollarSign, Activity, Coins } from "lucide-react";
 import { db } from "@/db";
 import { goldPrices } from "@/db/schema";
 import { desc } from "drizzle-orm";
 
 export const revalidate = 60; // Revalidate page every 60 seconds
 
+// Helper untuk format Rupiah
+const formatRupiah = (number: number) => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(number);
+};
+
 export default async function Dashboard() {
   // Fetch historical gold prices from Neon Database (last 50 records)
   const rawPrices = await db.select().from(goldPrices).orderBy(desc(goldPrices.timestamp)).limit(50);
   
   // Format data for Recharts (reverse to make it chronological)
-  const chartData = rawPrices.reverse().map(record => ({
+  const chartDataIdr = rawPrices.reverse().map(record => ({
     time: new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' }).format(record.timestamp),
-    price: parseFloat(record.priceUsd)
+    price: record.antamPriceIdr ? parseFloat(record.antamPriceIdr) : parseFloat(record.priceUsd) * 15500 / 31.103 * 1.05 // fallback if antam is null
   }));
 
-  const currentGoldPrice = chartData.length > 0 ? chartData[chartData.length - 1].price : 0;
+  const currentAntamPrice = chartDataIdr.length > 0 ? chartDataIdr[chartDataIdr.length - 1].price : 0;
+  
+  // XAU USD tetap ada untuk referensi
+  const currentGoldPriceUsd = rawPrices.length > 0 ? parseFloat(rawPrices[0].priceUsd) : 0;
 
   return (
     <div className="flex flex-col gap-10">
@@ -28,37 +41,52 @@ export default async function Dashboard() {
       </div>
 
       {/* Overview Cards */}
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-4">
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-lg font-semibold">Total Portfolio Value</CardTitle>
             <DollarSign className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-foreground">$45,231.89</div>
-            <p className="text-sm text-green-500 font-medium mt-1">+20.1% from last month</p>
+            <div className="text-2xl font-bold text-foreground">{formatRupiah(450000000)}</div>
+            <p className="text-sm text-green-500 font-medium mt-1">+20.1% dari bulan lalu</p>
           </CardContent>
         </Card>
+        
+        <Card className="shadow-sm border-primary/50 bg-primary/5">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-lg font-semibold">Emas Antam (1g)</CardTitle>
+            <Coins className="h-5 w-5 text-primary" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-primary">
+              {currentAntamPrice > 0 ? formatRupiah(currentAntamPrice) : 'Menunggu data...'}
+            </div>
+            <p className="text-sm text-muted-foreground font-medium mt-1">Estimasi Retail Real-time</p>
+          </CardContent>
+        </Card>
+
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-lg font-semibold">Gold Status (XAU)</CardTitle>
+            <CardTitle className="text-lg font-semibold">Spot Emas (XAU/USD)</CardTitle>
             <Activity className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-foreground">
-              ${currentGoldPrice > 0 ? currentGoldPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '---'}
+            <div className="text-2xl font-bold text-foreground">
+              ${currentGoldPriceUsd > 0 ? currentGoldPriceUsd.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '---'}
             </div>
-            <p className="text-sm text-muted-foreground font-medium mt-1">Real-time market price</p>
+            <p className="text-sm text-muted-foreground font-medium mt-1">Harga Global / oz</p>
           </CardContent>
         </Card>
+
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-lg font-semibold">Market Trend</CardTitle>
             <ArrowUpRight className="h-5 w-5 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-green-500">Bullish</div>
-            <p className="text-sm text-muted-foreground mt-1">S&P 500 futures up</p>
+            <div className="text-2xl font-bold text-green-500">Bullish</div>
+            <p className="text-sm text-muted-foreground mt-1">S&P 500 futures naik</p>
           </CardContent>
         </Card>
       </div>
@@ -68,7 +96,7 @@ export default async function Dashboard() {
         <div className="flex flex-col gap-10">
           {/* Gold Tracker Section */}
           <section id="tracker">
-            <GoldChart data={chartData} currentPrice={currentGoldPrice} />
+            <GoldChart data={chartDataIdr} currentPrice={currentAntamPrice} isRupiah={true} />
           </section>
         </div>
 

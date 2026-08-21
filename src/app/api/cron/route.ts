@@ -7,26 +7,43 @@ import { goldPrices } from '@/db/schema';
 export async function GET(request: Request) {
   // --- KEAMANAN TINGKAT TINGGI (CRON SECRET) ---
   const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
 
   try {
     // 1. Fetch live Gold Futures (GC=F) from Yahoo Finance
-    const quote = await yahooFinance.quote('GC=F');
-    const currentPrice = quote.regularMarketPrice;
+    const quoteGold = await yahooFinance.quote('GC=F');
+    const currentPriceUsd = quoteGold.regularMarketPrice;
 
-    if (!currentPrice) {
-      throw new Error("Could not fetch gold price");
+    // 2. Fetch live USD to IDR exchange rate
+    const quoteIdr = await yahooFinance.quote('IDR=X');
+    const exchangeRateIdr = quoteIdr.regularMarketPrice;
+
+    if (!currentPriceUsd || !exchangeRateIdr) {
+      throw new Error("Could not fetch gold price or exchange rate");
     }
 
-    // 2. Save it to Neon Database
+    // 3. Calculate Antam Price in IDR per gram
+    // 1 Troy Ounce = 31.1034768 grams
+    const rawPricePerGramIdr = (currentPriceUsd / 31.1034768) * exchangeRateIdr;
+    
+    // Add 5% premium for Antam physical minting (standard retail margin)
+    const antamPriceIdr = rawPricePerGramIdr * 1.05;
+
+    // 4. Save to Neon Database
     await db.insert(goldPrices).values({
-      priceUsd: currentPrice.toString(),
+      priceUsd: currentPriceUsd.toString(),
+      antamPriceIdr: antamPriceIdr.toString(),
       source: 'Yahoo Finance',
     });
 
-    return NextResponse.json({ success: true, price: currentPrice, time: new Date().toISOString() });
+    return NextResponse.json({ 
+      success: true, 
+      priceUsd: currentPriceUsd, 
+      antamPriceIdr: Math.round(antamPriceIdr), 
+      time: new Date().toISOString() 
+    });
   } catch (error: any) {
     console.error("Cron Error:", error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });

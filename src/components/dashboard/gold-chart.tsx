@@ -9,18 +9,19 @@ interface GoldChartProps {
     price: number;
   }[];
   currentPrice: number;
+  isRupiah?: boolean;
 }
 
-export function GoldChart({ data, currentPrice }: GoldChartProps) {
+export function GoldChart({ data, currentPrice, isRupiah = false }: GoldChartProps) {
   if (!data || data.length === 0) {
     return (
       <Card className="w-full shadow-sm">
         <CardHeader>
-          <CardTitle className="text-2xl">Gold Price Tracker (XAU/USD)</CardTitle>
-          <CardDescription className="text-base">Waiting for the first data sync...</CardDescription>
+          <CardTitle className="text-2xl">Grafik Emas Antam (IDR/g)</CardTitle>
+          <CardDescription className="text-base">Menunggu sinkronisasi data pertama...</CardDescription>
         </CardHeader>
         <CardContent className="h-[400px] flex items-center justify-center text-muted-foreground">
-          No data available yet. Cron job will fetch data soon.
+          Belum ada data. Cron job akan segera menarik data.
         </CardContent>
       </Card>
     );
@@ -31,27 +32,41 @@ export function GoldChart({ data, currentPrice }: GoldChartProps) {
   const percentChange = ((priceChange / firstPrice) * 100).toFixed(2);
   const isPositive = priceChange >= 0;
 
+  const formatPrice = (value: number) => {
+    if (isRupiah) {
+      return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+    }
+    return `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  };
+
+  const formatAxis = (value: number) => {
+    if (isRupiah) {
+      return `Rp${(value / 1000000).toFixed(2)}M`; // Format as millions for axis
+    }
+    return `$${value}`;
+  };
+
   return (
-    <Card className="w-full shadow-sm h-full flex flex-col">
+    <Card className="w-full shadow-sm h-full flex flex-col border-primary/20">
       <CardHeader>
         <div className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle className="text-2xl">Gold Price (XAU/USD)</CardTitle>
-            <CardDescription className="text-base">Real-time market data</CardDescription>
+            <CardTitle className="text-2xl">{isRupiah ? 'Grafik Emas Antam' : 'Gold Price (XAU/USD)'}</CardTitle>
+            <CardDescription className="text-base">{isRupiah ? 'Harga estimasi per gram (IDR)' : 'Real-time market data'}</CardDescription>
           </div>
           <div className="text-right">
             <div className="text-3xl font-bold text-foreground">
-              ${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {formatPrice(currentPrice)}
             </div>
             <div className={`text-sm font-medium mt-1 ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
-              {isPositive ? '+' : ''}{priceChange.toFixed(2)} ({isPositive ? '+' : ''}{percentChange}%)
+              {isPositive ? '+' : ''}{isRupiah ? 'Rp ' + priceChange.toLocaleString('id-ID', {maximumFractionDigits:0}) : priceChange.toFixed(2)} ({isPositive ? '+' : ''}{percentChange}%)
             </div>
           </div>
         </div>
       </CardHeader>
       <CardContent className="flex-1 min-h-[350px]">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          <LineChart data={data} margin={{ top: 10, right: 10, left: isRupiah ? 0 : -20, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted-foreground)/0.2)" />
             <XAxis 
               dataKey="time" 
@@ -66,15 +81,16 @@ export function GoldChart({ data, currentPrice }: GoldChartProps) {
               tickLine={false}
               axisLine={false}
               domain={['auto', 'auto']}
-              tickFormatter={(value) => `$${value}`}
+              tickFormatter={formatAxis}
             />
             <Tooltip 
+              formatter={(value: number) => [formatPrice(value), "Harga"]}
               contentStyle={{ 
                 backgroundColor: "hsl(var(--background))", 
                 borderColor: "hsl(var(--border))",
                 borderRadius: "8px",
               }}
-              itemStyle={{ color: "hsl(var(--foreground))" }}
+              itemStyle={{ color: "hsl(var(--foreground))", fontWeight: "bold" }}
             />
             <Line 
               type="monotone" 
