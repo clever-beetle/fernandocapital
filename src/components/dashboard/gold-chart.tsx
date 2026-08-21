@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 interface GoldChartProps {
   data: {
@@ -47,7 +47,8 @@ export function GoldChart({ data, currentPrice, isRupiah = false }: GoldChartPro
   };
 
   return (
-    <Card className="w-full shadow-sm h-full flex flex-col border-primary/20">
+    <Card className="w-full shadow-lg bg-card/40 backdrop-blur-xl border-border/50 hover:border-primary/30 transition-colors h-full flex flex-col relative overflow-hidden group">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 rounded-full blur-[100px] -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
       <CardHeader>
         <div className="flex flex-row items-center justify-between">
           <div>
@@ -66,8 +67,14 @@ export function GoldChart({ data, currentPrice, isRupiah = false }: GoldChartPro
       </CardHeader>
       <CardContent className="flex-1 min-h-[350px]">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 10, right: 10, left: isRupiah ? 0 : -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted-foreground)/0.2)" />
+          <AreaChart data={data} margin={{ top: 10, right: 10, left: isRupiah ? 0 : -20, bottom: 0 }}>
+            <defs>
+              <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.4}/>
+                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted-foreground)/0.15)" />
             <XAxis 
               dataKey="time" 
               stroke="hsl(var(--muted-foreground))"
@@ -86,21 +93,24 @@ export function GoldChart({ data, currentPrice, isRupiah = false }: GoldChartPro
             <Tooltip 
               formatter={(value: any) => [formatPrice(value), "Harga"]}
               contentStyle={{ 
-                backgroundColor: "hsl(var(--background))", 
+                backgroundColor: "hsl(var(--background)/0.8)", 
+                backdropFilter: "blur(12px)",
                 borderColor: "hsl(var(--border))",
-                borderRadius: "8px",
+                borderRadius: "12px",
+                boxShadow: "0 4px 20px -2px rgba(0,0,0,0.5)"
               }}
-              itemStyle={{ color: "hsl(var(--foreground))", fontWeight: "bold" }}
+              itemStyle={{ color: "hsl(var(--primary))", fontWeight: "bold" }}
             />
-            <Line 
+            <Area 
               type="monotone" 
               dataKey="price" 
               stroke="hsl(var(--primary))" 
+              fillOpacity={1}
+              fill="url(#colorPrice)"
               strokeWidth={3}
-              dot={false}
-              activeDot={{ r: 6, fill: "hsl(var(--primary))" }}
+              activeDot={{ r: 6, fill: "hsl(var(--background))", stroke: "hsl(var(--primary))", strokeWidth: 3 }}
             />
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
