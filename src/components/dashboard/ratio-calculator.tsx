@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Calculator } from "lucide-react";
+import { toast } from "sonner";
 
 export function RatioCalculator() {
   const [stockPrice, setStockPrice] = useState("");
@@ -20,6 +21,15 @@ export function RatioCalculator() {
   const per = price && earnings ? (price / earnings).toFixed(2) : "-";
   const pbv = price && bookValue ? (price / bookValue).toFixed(2) : "-";
   const roe = earnings && bookValue ? ((earnings / bookValue) * 100).toFixed(2) + "%" : "-";
+
+  const handleReset = () => {
+    setStockPrice("");
+    setEps("");
+    setBvps("");
+    toast.success("Calculator reset", {
+      description: "All input fields have been cleared successfully.",
+    });
+  };
 
   return (
     <Card className="w-full shadow-sm">
@@ -67,7 +77,7 @@ export function RatioCalculator() {
               className="h-12 text-lg"
             />
           </div>
-          <Button variant="outline" size="lg" className="mt-2 text-base h-12" onClick={() => { setStockPrice(""); setEps(""); setBvps(""); }}>
+          <Button variant="outline" size="lg" className="mt-2 text-base h-12" onClick={handleReset}>
             Reset Fields
           </Button>
         </div>

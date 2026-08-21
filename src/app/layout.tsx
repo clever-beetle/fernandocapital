@@ -3,6 +3,9 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Toaster } from "@/components/ui/sonner";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -10,8 +13,21 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Fernando Capital",
-  description: "Financial dashboard, gold tracker, and stock ratio calculator.",
+  title: "Fernando Capital | Premium Financial Dashboard",
+  description: "Real-time gold tracker, stock ratio calculator, and financial news dashboard tailored for professional investors.",
+  manifest: "/manifest.json",
+  openGraph: {
+    title: "Fernando Capital",
+    description: "Professional financial dashboard and real-time gold tracker.",
+    type: "website",
+    url: "https://fernando-capital.vercel.app",
+    siteName: "Fernando Capital",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Fernando Capital",
+    description: "Professional financial dashboard and real-time gold tracker.",
+  },
 };
 
 export default function RootLayout({
@@ -34,7 +50,10 @@ export default function RootLayout({
               {children}
             </div>
           </main>
+          <Toaster />
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
