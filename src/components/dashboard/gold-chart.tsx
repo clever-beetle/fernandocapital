@@ -1,86 +1,92 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
-const chartData = [
-  { day: "Monday", price: 2350 },
-  { day: "Tuesday", price: 2380 },
-  { day: "Wednesday", price: 2365 },
-  { day: "Thursday", price: 2410 },
-  { day: "Friday", price: 2450 },
-  { day: "Saturday", price: 2445 },
-  { day: "Sunday", price: 2480 },
-];
+interface GoldChartProps {
+  data: {
+    time: string;
+    price: number;
+  }[];
+  currentPrice: number;
+}
 
-const chartConfig = {
-  price: {
-    label: "Price (USD/oz)",
-    color: "hsl(var(--primary))",
-  },
-} satisfies ChartConfig;
+export function GoldChart({ data, currentPrice }: GoldChartProps) {
+  if (!data || data.length === 0) {
+    return (
+      <Card className="w-full shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-2xl">Gold Price Tracker (XAU/USD)</CardTitle>
+          <CardDescription className="text-base">Waiting for the first data sync...</CardDescription>
+        </CardHeader>
+        <CardContent className="h-[400px] flex items-center justify-center text-muted-foreground">
+          No data available yet. Cron job will fetch data soon.
+        </CardContent>
+      </Card>
+    );
+  }
 
-export function GoldChart() {
+  const firstPrice = data[0].price;
+  const priceChange = currentPrice - firstPrice;
+  const percentChange = ((priceChange / firstPrice) * 100).toFixed(2);
+  const isPositive = priceChange >= 0;
+
   return (
-    <Card>
+    <Card className="w-full shadow-sm h-full flex flex-col">
       <CardHeader>
-        <CardTitle>Gold Price Tracker (XAU/USD)</CardTitle>
-        <CardDescription>Live tracking for the past 7 days</CardDescription>
+        <div className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle className="text-2xl">Gold Price (XAU/USD)</CardTitle>
+            <CardDescription className="text-base">Real-time market data</CardDescription>
+          </div>
+          <div className="text-right">
+            <div className="text-3xl font-bold text-foreground">
+              ${currentPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+            <div className={`text-sm font-medium mt-1 ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+              {isPositive ? '+' : ''}{priceChange.toFixed(2)} ({isPositive ? '+' : ''}{percentChange}%)
+            </div>
+          </div>
+        </div>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="day"
+      <CardContent className="flex-1 min-h-[350px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted-foreground)/0.2)" />
+            <XAxis 
+              dataKey="time" 
+              stroke="hsl(var(--muted-foreground))"
+              fontSize={12}
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+            <YAxis 
+              stroke="hsl(var(--muted-foreground))"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+              domain={['auto', 'auto']}
+              tickFormatter={(value) => `$${value}`}
             />
-            <Line
-              dataKey="price"
-              type="natural"
-              stroke="var(--color-price)"
-              strokeWidth={2}
+            <Tooltip 
+              contentStyle={{ 
+                backgroundColor: "hsl(var(--background))", 
+                borderColor: "hsl(var(--border))",
+                borderRadius: "8px",
+              }}
+              itemStyle={{ color: "hsl(var(--foreground))" }}
+            />
+            <Line 
+              type="monotone" 
+              dataKey="price" 
+              stroke="hsl(var(--primary))" 
+              strokeWidth={3}
               dot={false}
+              activeDot={{ r: 6, fill: "hsl(var(--primary))" }}
             />
           </LineChart>
-        </ChartContainer>
+        </ResponsiveContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this week <TrendingUp className="h-4 w-4 text-green-500" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing dummy data for the last 7 days.
-        </div>
-      </CardFooter>
     </Card>
   );
 }

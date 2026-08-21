@@ -1,8 +1,24 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { GoldChart } from "@/components/dashboard/gold-chart";
 import { ArrowUpRight, DollarSign, Activity } from "lucide-react";
+import { db } from "@/db";
+import { goldPrices } from "@/db/schema";
+import { desc } from "drizzle-orm";
 
-export default function Dashboard() {
+export const revalidate = 60; // Revalidate page every 60 seconds
+
+export default async function Dashboard() {
+  // Fetch historical gold prices from Neon Database (last 50 records)
+  const rawPrices = await db.select().from(goldPrices).orderBy(desc(goldPrices.timestamp)).limit(50);
+  
+  // Format data for Recharts (reverse to make it chronological)
+  const chartData = rawPrices.reverse().map(record => ({
+    time: new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit' }).format(record.timestamp),
+    price: parseFloat(record.priceUsd)
+  }));
+
+  const currentGoldPrice = chartData.length > 0 ? chartData[chartData.length - 1].price : 0;
+
   return (
     <div className="flex flex-col gap-10">
       {/* Welcome Section */}
@@ -29,8 +45,10 @@ export default function Dashboard() {
             <Activity className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold text-foreground">$2,480.00</div>
-            <p className="text-sm text-green-500 font-medium mt-1">Up +5.2% this week</p>
+            <div className="text-4xl font-bold text-foreground">
+              ${currentGoldPrice > 0 ? currentGoldPrice.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '---'}
+            </div>
+            <p className="text-sm text-muted-foreground font-medium mt-1">Real-time market price</p>
           </CardContent>
         </Card>
         <Card className="shadow-sm">
@@ -50,7 +68,7 @@ export default function Dashboard() {
         <div className="flex flex-col gap-10">
           {/* Gold Tracker Section */}
           <section id="tracker">
-            <GoldChart />
+            <GoldChart data={chartData} currentPrice={currentGoldPrice} />
           </section>
         </div>
 
