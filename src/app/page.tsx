@@ -228,7 +228,6 @@ export default async function Dashboard() {
           </Card>
         </section>
       </div>
-      </div>
     </div>
   );
 }
