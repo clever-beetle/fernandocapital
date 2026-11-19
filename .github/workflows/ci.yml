@@ -1,10 +1,13 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+permissions:
+  contents: write
 
 jobs:
   build-and-test:
@@ -13,6 +16,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -34,3 +40,12 @@ jobs:
       env:
         # Dummy DB URL to pass build-time checks if any
         DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
+
+    - name: 🚀 Auto Push to Production
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        git config user.name "Deploy Bot"
+        git config user.email "deploy@fernandocapital.web.id"
+        git checkout -B production
+        git push origin production --force
+        echo "✅ Deployed to production"

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { CircleDollarSign, CircleUser, Search, Bell, Menu } from "lucide-react";
+import Image from "next/image";
+import { CircleUser, Search, Bell, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -21,9 +22,16 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="left" className="w-[300px] sm:w-[400px]">
               <nav className="flex flex-col gap-6 mt-10">
-                <Link href="/" className="flex items-center gap-3 font-bold mb-6">
-                  <div className="p-2 bg-primary/10 rounded-xl">
-                    <CircleDollarSign className="h-8 w-8 text-primary drop-shadow-[0_0_10px_hsl(var(--primary))]" />
+                <Link href="/" className="flex items-center gap-3 font-bold mb-6 group">
+                  <div className="px-2.5 py-2 bg-gradient-to-br from-white/15 to-primary/10 dark:from-white/10 dark:to-primary/15 border border-white/15 rounded-xl flex items-center justify-center shadow-[0_0_15px_hsl(var(--primary)/0.15)]">
+                    <Image
+                      src="/logo.png"
+                      alt="Fernando Capital Logo"
+                      width={140}
+                      height={48}
+                      priority
+                      className="h-6 w-auto object-contain drop-shadow-[0_2px_10px_hsl(var(--primary)/0.4)] transition-transform duration-300 group-hover:scale-105"
+                    />
                   </div>
                   <span className="text-2xl bg-gradient-to-r from-foreground to-primary/80 bg-clip-text text-transparent">Fernando Capital</span>
                 </Link>
@@ -40,10 +48,17 @@ export function Header() {
             </SheetContent>
           </Sheet>
 
-          {/* Desktop Logo */}
-          <Link href="/" className="flex items-center gap-3 font-bold">
-            <div className="p-2 bg-primary/10 rounded-xl hidden md:flex items-center justify-center">
-              <CircleDollarSign className="h-7 w-7 text-primary drop-shadow-[0_0_10px_hsl(var(--primary))]" />
+          {/* Main Logo */}
+          <Link href="/" className="flex items-center gap-3 font-bold group">
+            <div className="px-2.5 py-1.5 md:px-3 md:py-2 bg-gradient-to-br from-white/15 to-primary/10 dark:from-white/10 dark:to-primary/15 border border-white/15 rounded-xl flex items-center justify-center shadow-[0_0_18px_hsl(var(--primary)/0.15)] group-hover:border-primary/40 transition-all">
+              <Image
+                src="/logo.png"
+                alt="Fernando Capital Logo"
+                width={140}
+                height={48}
+                priority
+                className="h-5 md:h-6 w-auto object-contain drop-shadow-[0_2px_10px_hsl(var(--primary)/0.4)] transition-transform duration-300 group-hover:scale-105"
+              />
             </div>
             <span className="text-xl md:text-2xl bg-gradient-to-r from-foreground to-primary/80 bg-clip-text text-transparent tracking-tight">Fernando Capital</span>
           </Link>

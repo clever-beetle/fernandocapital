@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Home, Newspaper, TrendingUp, Calculator, CircleDollarSign } from "lucide-react";
+import Image from "next/image";
+import { Home, Newspaper, TrendingUp, Calculator } from "lucide-react";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: Home },
@@ -13,8 +14,14 @@ export function Sidebar() {
     <div className="hidden border-r bg-muted/40 md:block md:w-64 lg:w-72">
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-          <Link href="/" className="flex items-center gap-2 font-semibold text-primary">
-            <CircleDollarSign className="h-6 w-6" />
+          <Link href="/" className="flex items-center gap-2.5 font-semibold text-primary">
+            <Image
+              src="/logo.png"
+              alt="Fernando Capital Logo"
+              width={110}
+              height={38}
+              className="h-5 w-auto object-contain"
+            />
             <span className="text-lg">Fernando Capital</span>
           </Link>
         </div>

@@ -13,20 +13,40 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://fernando-capital.vercel.app"),
   title: "Fernando Capital | Premium Financial Dashboard",
   description: "Real-time gold tracker, stock ratio calculator, and financial news dashboard tailored for professional investors.",
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: ["/icon-192.png"],
+  },
   openGraph: {
     title: "Fernando Capital",
     description: "Professional financial dashboard and real-time gold tracker.",
     type: "website",
     url: "https://fernando-capital.vercel.app",
     siteName: "Fernando Capital",
+    images: [
+      {
+        url: "/logo.png",
+        width: 574,
+        height: 197,
+        alt: "Fernando Capital Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Fernando Capital",
     description: "Professional financial dashboard and real-time gold tracker.",
+    images: ["/logo.png"],
   },
 };
 
