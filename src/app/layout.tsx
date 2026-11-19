@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/sonner";
+import { SystemProvider } from "@/components/system/system-provider";
+import { getVersionInfo } from "@/lib/version";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -55,21 +57,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const versionInfo = getVersionInfo(false);
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body className={`${jakarta.variable} flex min-h-screen flex-col bg-background text-foreground`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
+          <Header appVersion={versionInfo.version} />
           <main className="flex-1">
             <div className="container mx-auto py-8 px-4 md:px-8">
               {children}
             </div>
           </main>
+          <SystemProvider initialVersion={versionInfo.version} />
           <Toaster />
         </ThemeProvider>
         <Analytics />

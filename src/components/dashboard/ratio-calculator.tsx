@@ -8,15 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Calculator } from "lucide-react";
 import { toast } from "sonner";
+import { formatRibuanInput, parseRibuanInput } from "@/components/system/system-provider";
 
 export function RatioCalculator() {
   const [stockPrice, setStockPrice] = useState("");
   const [eps, setEps] = useState("");
   const [bvps, setBvps] = useState("");
   
-  const price = parseFloat(stockPrice);
-  const earnings = parseFloat(eps);
-  const bookValue = parseFloat(bvps);
+  const price = parseRibuanInput(stockPrice);
+  const earnings = parseRibuanInput(eps);
+  const bookValue = parseRibuanInput(bvps);
 
   const per = price && earnings ? (price / earnings).toFixed(2) : "-";
   const pbv = price && bookValue ? (price / bookValue).toFixed(2) : "-";
@@ -48,33 +49,36 @@ export function RatioCalculator() {
             <Label htmlFor="price" className="text-base">Current Stock Price</Label>
             <Input
               id="price"
-              type="number"
-              placeholder="e.g. 1500"
+              type="text"
+              inputMode="decimal"
+              placeholder="e.g. 1.500"
               value={stockPrice}
-              onChange={(e) => setStockPrice(e.target.value)}
-              className="h-12 text-lg"
+              onChange={(e) => setStockPrice(formatRibuanInput(e.target.value, false))}
+              className="auto-ribuan h-12 text-lg"
             />
           </div>
           <div className="grid gap-3">
             <Label htmlFor="eps" className="text-base">Earnings Per Share (EPS)</Label>
             <Input
               id="eps"
-              type="number"
+              type="text"
+              inputMode="decimal"
               placeholder="e.g. 150"
               value={eps}
-              onChange={(e) => setEps(e.target.value)}
-              className="h-12 text-lg"
+              onChange={(e) => setEps(formatRibuanInput(e.target.value, false))}
+              className="auto-ribuan h-12 text-lg"
             />
           </div>
           <div className="grid gap-3">
             <Label htmlFor="bvps" className="text-base">Book Value Per Share (BVPS)</Label>
             <Input
               id="bvps"
-              type="number"
-              placeholder="e.g. 1200"
+              type="text"
+              inputMode="decimal"
+              placeholder="e.g. 1.200"
               value={bvps}
-              onChange={(e) => setBvps(e.target.value)}
-              className="h-12 text-lg"
+              onChange={(e) => setBvps(formatRibuanInput(e.target.value, false))}
+              className="auto-ribuan h-12 text-lg"
             />
           </div>
           <Button variant="outline" size="lg" className="mt-2 text-base h-12" onClick={handleReset}>
