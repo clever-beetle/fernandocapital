@@ -20,9 +20,9 @@ export interface VersionInfo {
   history: ReleaseHistoryItem[];
 }
 
-export const _BASE_VERSION = "1.5.1";
+export const _BASE_VERSION = "1.6.0";
 export const _BASE_RELEASE_DATE = "2026-11-22";
-export const _BASE_CODENAME = "Palet Warna Resmi: Midnight Navy, Champagne Gold & Warm Ivory";
+export const _BASE_CODENAME = "Platform 5 Pilar Financial Intelligence & AI Research Studio (70/30)";
 export const _PUBLIC_CODENAME = "Rilis Stabil • Pembaruan Otomatis Aktif";
 
 const _BULAN_ID = [
@@ -42,6 +42,17 @@ const _BULAN_ID = [
 ];
 
 export const _BASE_RELEASE_HISTORY: ReleaseHistoryItem[] = [
+  {
+    version: "1.6.0",
+    date_id: "22 November 2026",
+    title: "Platform 5 Pilar Financial Intelligence & AI Research Studio (70/30)",
+    highlights: [
+      "Merombak antarmuka menjadi platform Financial Intelligence & Research 5 Pilar yang saling terhubung: (01) Equity & Company Research, (02) Market Intelligence, (03) Economic Insights, (04) Financial Data & Tools, dan (05) Financial Knowledge.",
+      "Membangun rantai dampak lintas aset interaktif: menghubungkan kejadian makroekonomi & suku bunga langsung dengan dampaknya ke Saham, Obligasi (SBN), dan Emas.",
+      "Menghadirkan 5 instrumen kalkulasi finansial deterministik tervalidasi kode: Stock Valuation & Margin of Safety, Financial Ratio Calculator, Compound Interest, Gold Price Reference (0.5g–1000g), dan Company Comparison.",
+      "Menambahkan halaman AI Research & Automation Studio (/studio) dengan model operasional 70% AI & Automation / 30% Human Oversight, 5 Sistem Otomatis, dan simulasi 6-Tahap Automated Gold Research Workflow.",
+    ],
+  },
   {
     version: "1.5.1",
     date_id: "22 November 2026",
