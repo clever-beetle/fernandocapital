@@ -47,8 +47,8 @@ export function GoldChart({ data, currentPrice, isRupiah = false }: GoldChartPro
   };
 
   return (
-    <Card className="w-full shadow-lg bg-card/40 backdrop-blur-xl border-border/50 hover:border-primary/30 transition-colors h-full flex flex-col relative overflow-hidden group">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 rounded-full blur-[100px] -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+    <Card className="w-full shadow-lg bg-card/90 backdrop-blur-xl border-border hover:border-[#C3A477]/50 transition-colors h-full flex flex-col relative overflow-hidden group">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-[#C3A477]/10 rounded-full blur-[100px] -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
       <CardHeader>
         <div className="flex flex-row items-center justify-between">
           <div>
@@ -59,7 +59,7 @@ export function GoldChart({ data, currentPrice, isRupiah = false }: GoldChartPro
             <div className="text-3xl font-bold text-foreground">
               {formatPrice(currentPrice)}
             </div>
-            <div className={`text-sm font-medium mt-1 ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+            <div className={`text-sm font-medium mt-1 ${isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
               {isPositive ? '+' : ''}{isRupiah ? 'Rp ' + priceChange.toLocaleString('id-ID', {maximumFractionDigits:0}) : priceChange.toFixed(2)} ({isPositive ? '+' : ''}{percentChange}%)
             </div>
           </div>
@@ -70,20 +70,20 @@ export function GoldChart({ data, currentPrice, isRupiah = false }: GoldChartPro
           <AreaChart data={data} margin={{ top: 10, right: 10, left: isRupiah ? 0 : -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.4}/>
-                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#C3A477" stopOpacity={0.45}/>
+                <stop offset="95%" stopColor="#C3A477" stopOpacity={0}/>
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted-foreground)/0.15)" />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />
             <XAxis 
               dataKey="time" 
-              stroke="hsl(var(--muted-foreground))"
+              stroke="var(--muted-foreground)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
             />
             <YAxis 
-              stroke="hsl(var(--muted-foreground))"
+              stroke="var(--muted-foreground)"
               fontSize={12}
               tickLine={false}
               axisLine={false}
@@ -93,22 +93,23 @@ export function GoldChart({ data, currentPrice, isRupiah = false }: GoldChartPro
             <Tooltip 
               formatter={(value: any) => [formatPrice(value), "Harga"]}
               contentStyle={{ 
-                backgroundColor: "hsl(var(--background)/0.8)", 
+                backgroundColor: "var(--card)", 
                 backdropFilter: "blur(12px)",
-                borderColor: "hsl(var(--border))",
+                borderColor: "#C3A477",
+                color: "var(--foreground)",
                 borderRadius: "12px",
-                boxShadow: "0 4px 20px -2px rgba(0,0,0,0.5)"
+                boxShadow: "0 4px 20px -2px rgba(16, 27, 44, 0.25)"
               }}
-              itemStyle={{ color: "hsl(var(--primary))", fontWeight: "bold" }}
+              itemStyle={{ color: "#C3A477", fontWeight: "bold" }}
             />
             <Area 
               type="monotone" 
               dataKey="price" 
-              stroke="hsl(var(--primary))" 
+              stroke="#C3A477" 
               fillOpacity={1}
               fill="url(#colorPrice)"
               strokeWidth={3}
-              activeDot={{ r: 6, fill: "hsl(var(--background))", stroke: "hsl(var(--primary))", strokeWidth: 3 }}
+              activeDot={{ r: 6, fill: "var(--background)", stroke: "#C3A477", strokeWidth: 3 }}
             />
           </AreaChart>
         </ResponsiveContainer>

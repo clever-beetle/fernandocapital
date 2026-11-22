@@ -4,8 +4,8 @@
   "description": "Professional financial dashboard, gold tracker, and stock calculator.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#020617",
+  "background_color": "#F4F0E7",
+  "theme_color": "#101B2C",
   "icons": [
     {
       "src": "/icon-192.png",

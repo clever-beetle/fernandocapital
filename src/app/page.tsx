@@ -38,19 +38,19 @@ export default async function Dashboard() {
     <div className="flex flex-col gap-10 max-w-7xl mx-auto w-full pb-10">
       {/* Welcome Section */}
       <div className="flex flex-col gap-2 relative z-10">
-        <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/20 rounded-full blur-[100px] -z-10" />
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-foreground via-foreground/90 to-primary/80 bg-clip-text text-transparent">
+        <div className="absolute -top-10 -left-10 w-40 h-40 bg-[#C3A477]/20 rounded-full blur-[100px] -z-10" />
+        <h2 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-[#101B2C] via-[#242A32] to-[#9E7D4B] dark:from-[#F4F0E7] dark:via-[#F4F0E7]/90 dark:to-[#C3A477] bg-clip-text text-transparent">
           Welcome back, Investor
         </h2>
-        <p className="text-lg text-muted-foreground">Here is what's happening in your portfolio today.</p>
+        <p className="text-lg text-muted-foreground">Here is what&apos;s happening in your portfolio today.</p>
       </div>
 
       {/* Overview Cards */}
       <div className="grid gap-6 md:grid-cols-4 relative z-10">
-        <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50 hover:border-primary/30 transition-colors">
+        <Card className="shadow-md bg-card/90 backdrop-blur-xl border-border hover:border-[#C3A477]/50 transition-colors">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Kinerja Emas (YTD)</CardTitle>
-            <div className="p-2 bg-primary/10 rounded-lg">
+            <div className="p-2 bg-secondary rounded-lg">
               <Activity className="h-4 w-4 text-primary" />
             </div>
           </CardHeader>
@@ -63,23 +63,23 @@ export default async function Dashboard() {
           </CardContent>
         </Card>
         
-        <Card className="shadow-[0_0_20px_hsl(var(--primary)/0.05)] bg-gradient-to-br from-card/80 to-primary/5 backdrop-blur-xl border-primary/20 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[50px] -z-10" />
+        <Card className="shadow-md bg-gradient-to-br from-card via-card to-[#C3A477]/15 backdrop-blur-xl border-[#C3A477]/45 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#C3A477]/15 rounded-full blur-[50px] -z-10" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-primary">Emas Antam (1g)</CardTitle>
-            <div className="p-2 bg-primary/20 rounded-lg">
-              <Coins className="h-4 w-4 text-primary drop-shadow-[0_0_8px_hsl(var(--primary))]" />
+            <CardTitle className="text-sm font-semibold text-[#8A6A3A] dark:text-[#C3A477]">Emas Antam (1g)</CardTitle>
+            <div className="p-2 bg-[#C3A477]/20 rounded-lg">
+              <Coins className="h-4 w-4 text-[#8A6A3A] dark:text-[#C3A477]" />
             </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl md:text-3xl font-bold text-foreground">
               {currentAntamPrice > 0 ? formatRupiah(currentAntamPrice) : 'Menunggu data...'}
             </div>
-            <p className="text-xs text-primary/80 font-medium mt-2 uppercase tracking-wider">Estimasi Retail Live</p>
+            <p className="text-xs text-[#8A6A3A] dark:text-[#C3A477] font-semibold mt-2 uppercase tracking-wider">Estimasi Retail Live</p>
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50 hover:border-primary/30 transition-colors">
+        <Card className="shadow-md bg-card/90 backdrop-blur-xl border-border hover:border-[#C3A477]/50 transition-colors">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Spot Emas (XAU/USD)</CardTitle>
             <div className="p-2 bg-secondary rounded-lg">
@@ -94,16 +94,16 @@ export default async function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50 hover:border-primary/30 transition-colors">
+        <Card className="shadow-md bg-card/90 backdrop-blur-xl border-border hover:border-[#C3A477]/50 transition-colors">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Market Trend</CardTitle>
-            <div className="p-2 bg-chart-2/10 rounded-lg">
+            <div className="p-2 bg-chart-2/15 rounded-lg">
               <ArrowUpRight className="h-4 w-4 text-chart-2" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl md:text-3xl font-bold text-chart-2 drop-shadow-[0_0_8px_hsl(var(--chart-2)/0.5)]">Bullish</div>
-            <p className="text-sm text-muted-foreground mt-2">S&P 500 futures naik</p>
+            <div className="text-2xl md:text-3xl font-bold text-chart-2">Bullish</div>
+            <p className="text-sm text-muted-foreground mt-2">S&amp;P 500 futures naik</p>
           </CardContent>
         </Card>
       </div>
@@ -127,11 +127,11 @@ export default async function Dashboard() {
 
           {/* Antam Physical Price Table */}
           <section id="pricelist" className="flex-1">
-            <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50 h-full">
+            <Card className="shadow-md bg-card/90 backdrop-blur-xl border-border h-full">
               <CardHeader className="pb-3">
                 <CardTitle className="text-xl font-bold flex items-center justify-between">
                   <span>Harga Fisik Antam</span>
-                  <span className="text-xs font-normal px-2 py-1 bg-primary/20 text-primary rounded-full">
+                  <span className="text-xs font-semibold px-2.5 py-1 bg-[#C3A477]/20 text-[#7D5E31] dark:text-[#C3A477] border border-[#C3A477]/30 rounded-full">
                     {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </span>
                 </CardTitle>
@@ -154,10 +154,10 @@ export default async function Dashboard() {
                     const basePrice = currentAntamPrice * tier.weight * tier.multiplier;
                     const taxPrice = basePrice * 1.0025;
                     return (
-                      <div key={i} className="grid grid-cols-3 text-sm font-medium items-center py-2 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors rounded-md px-1">
-                        <div className="text-foreground">{tier.label}</div>
+                      <div key={i} className="grid grid-cols-3 text-sm font-medium items-center py-2 border-b border-border/60 last:border-0 hover:bg-secondary/60 transition-colors rounded-md px-1.5">
+                        <div className="text-foreground font-semibold">{tier.label}</div>
                         <div className="text-right text-muted-foreground">{currentAntamPrice > 0 ? formatRupiah(basePrice).replace('Rp', '') : '---'}</div>
-                        <div className="text-right text-primary">{currentAntamPrice > 0 ? formatRupiah(taxPrice).replace('Rp', '') : '---'}</div>
+                        <div className="text-right font-semibold text-[#7D5E31] dark:text-[#C3A477]">{currentAntamPrice > 0 ? formatRupiah(taxPrice).replace('Rp', '') : '---'}</div>
                       </div>
                     );
                   })}
@@ -171,7 +171,7 @@ export default async function Dashboard() {
       {/* Financial News Section (Moved to Bottom, Full Width) */}
       <div className="relative z-10 mt-6">
         <section id="news">
-          <Card className="shadow-lg bg-card/40 backdrop-blur-xl border-border/50">
+          <Card className="shadow-md bg-card/90 backdrop-blur-xl border-border">
             <CardHeader>
               <CardTitle className="text-2xl font-bold">Market Intelligence</CardTitle>
               <CardDescription className="text-base">Real-time updates on global markets.</CardDescription>
@@ -183,11 +183,11 @@ export default async function Dashboard() {
                 { title: "Gold hits new all-time high amid inflation fears", time: "1 day ago", source: "Reuters" },
                 { title: "Consumer spending remains resilient in Q2", time: "1 day ago", source: "WSJ" },
               ].map((news, i) => (
-                <div key={i} className="group flex flex-col justify-between rounded-xl border border-white/5 bg-white/5 p-5 transition-all hover:bg-white/10 hover:border-primary/30 cursor-pointer min-h-[120px]">
-                  <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-3 mb-4">{news.title}</p>
+                <div key={i} className="group flex flex-col justify-between rounded-xl border border-border bg-secondary/45 p-5 transition-all hover:bg-secondary hover:border-[#C3A477]/60 cursor-pointer min-h-[120px]">
+                  <p className="text-sm font-medium text-foreground group-hover:text-[#7D5E31] dark:group-hover:text-[#C3A477] transition-colors line-clamp-3 mb-4">{news.title}</p>
                   <div className="flex items-center justify-between mt-auto">
                     <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{news.source} • {news.time}</p>
-                    <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-primary opacity-0 group-hover:opacity-100 transition-all" />
+                    <ArrowUpRight className="h-4 w-4 text-muted-foreground group-hover:text-[#C3A477] opacity-0 group-hover:opacity-100 transition-all" />
                   </div>
                 </div>
               ))}

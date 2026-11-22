@@ -131,11 +131,18 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
           className="inline-flex items-center gap-2 self-start sm:self-auto rounded-full border border-border bg-card hover:bg-accent hover:text-accent-foreground px-3.5 py-1.5 text-xs font-medium text-foreground transition-colors shadow-sm"
         >
           <Image
-            src="/logo.png"
+            src="/logo-navy.png"
             alt="Fernando Capital"
             width={40}
             height={14}
-            className="h-3.5 w-auto object-contain"
+            className="h-3.5 w-auto object-contain block dark:hidden"
+          />
+          <Image
+            src="/logo-gold.png"
+            alt="Fernando Capital"
+            width={40}
+            height={14}
+            className="h-3.5 w-auto object-contain hidden dark:block"
           />
           <span className="font-semibold">Versi v{versionInfo.version}</span>
           <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
@@ -224,13 +231,20 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
               <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-16 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-gradient-to-br from-white/15 to-primary/15 p-2 shadow-sm">
+                    <div className="flex h-12 w-16 shrink-0 items-center justify-center rounded-xl border border-[#101B2C]/15 dark:border-[#C3A477]/45 bg-[#FAF7F0] dark:bg-[#1B2C45] p-2 shadow-sm">
                       <Image
-                        src="/logo.png"
-                        alt="Logo Fernando Capital"
+                        src="/logo-navy.png"
+                        alt="Logo Fernando Capital (Midnight Navy)"
                         width={100}
-                        height={34}
-                        className="h-full w-full object-contain drop-shadow-[0_2px_8px_hsl(var(--primary)/0.4)]"
+                        height={36}
+                        className="h-full w-full object-contain block dark:hidden"
+                      />
+                      <Image
+                        src="/logo-gold.png"
+                        alt="Logo Fernando Capital (Champagne Gold)"
+                        width={100}
+                        height={36}
+                        className="h-full w-full object-contain hidden dark:block"
                       />
                     </div>
                     <div className="space-y-1">
@@ -406,37 +420,69 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                       onClick={() => setTheme("light")}
                       className={`flex flex-col items-center gap-2 rounded-xl border p-4 text-xs font-medium transition-all ${
                         theme === "light"
-                          ? "border-primary bg-primary/10 text-primary"
+                          ? "border-[#C3A477] bg-[#C3A477]/15 text-foreground font-semibold"
                           : "border-border bg-background hover:bg-accent"
                       }`}
                     >
-                      <Sun className="w-5 h-5" />
-                      <span>Terang</span>
+                      <Sun className="w-5 h-5 text-[#C3A477]" />
+                      <span>Warm Ivory (Utama)</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setTheme("dark")}
                       className={`flex flex-col items-center gap-2 rounded-xl border p-4 text-xs font-medium transition-all ${
                         theme === "dark"
-                          ? "border-primary bg-primary/10 text-primary"
+                          ? "border-[#C3A477] bg-[#C3A477]/15 text-foreground font-semibold"
                           : "border-border bg-background hover:bg-accent"
                       }`}
                     >
-                      <Moon className="w-5 h-5" />
-                      <span>Gelap (Gold)</span>
+                      <Moon className="w-5 h-5 text-[#C3A477]" />
+                      <span>Midnight Navy (Gelap)</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setTheme("system")}
                       className={`flex flex-col items-center gap-2 rounded-xl border p-4 text-xs font-medium transition-all ${
                         theme === "system"
-                          ? "border-primary bg-primary/10 text-primary"
+                          ? "border-[#C3A477] bg-[#C3A477]/15 text-foreground font-semibold"
                           : "border-border bg-background hover:bg-accent"
                       }`}
                     >
-                      <Laptop className="w-5 h-5" />
+                      <Laptop className="w-5 h-5 text-muted-foreground" />
                       <span>Sistem</span>
                     </button>
+                  </div>
+                </div>
+
+                <div className="shrink-0 bg-border/60 h-[1px] w-full" />
+
+                <div className="space-y-3">
+                  <h4 className="text-sm font-semibold text-foreground">Palet Warna Resmi Fernando Capital</h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
+                    {[
+                      { name: "Midnight Navy", role: "Logo Utama / Dark BG", hex: "#101B2C" },
+                      { name: "Champagne Gold", role: "Logo Alternatif / Aksen", hex: "#C3A477" },
+                      { name: "Warm Ivory", role: "Background Utama", hex: "#F4F0E7" },
+                      { name: "Graphite", role: "Teks Utama", hex: "#242A32" },
+                      { name: "Muted Taupe", role: "Elemen Pendukung", hex: "#8C8275" },
+                      { name: "Silver Mist", role: "Elemen Pendukung", hex: "#D8E0E8" },
+                    ].map((swatch) => (
+                      <div
+                        key={swatch.name}
+                        className="flex items-center gap-2.5 rounded-lg border border-border bg-background/70 p-2"
+                      >
+                        <span
+                          className="h-7 w-7 rounded-md border border-black/15 shrink-0 shadow-xs"
+                          style={{ backgroundColor: swatch.hex }}
+                        />
+                        <div className="min-w-0">
+                          <p className="font-semibold text-foreground truncate">{swatch.name}</p>
+                          <p className="text-[10px] text-muted-foreground font-mono truncate">
+                            {swatch.hex} • {swatch.role}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 

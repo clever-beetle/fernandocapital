@@ -10,6 +10,12 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
+  --color-gold: var(--gold);
+  --color-navy: var(--navy);
+  --color-ivory: var(--ivory);
+  --color-graphite: var(--graphite);
+  --color-taupe: var(--taupe);
+  --color-silver-mist: var(--silver-mist);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,72 +55,97 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  /* Palet Utama (Light Mode):
+     - Background utama: Warm Ivory #F4F0E7
+     - Teks utama: Graphite #242A32
+     - Logo utama / Primary: Midnight Navy #101B2C
+     - Logo alternatif / Aksen Emas: Champagne Gold #C3A477
+     - Elemen pendukung: Muted Taupe (#8C8275 / #EAE3D5) & Silver Mist (#D8E0E8)
+  */
+  --background: #F4F0E7;
+  --foreground: #242A32;
+  --card: #FAF7F0;
+  --card-foreground: #242A32;
+  --popover: #FAF7F0;
+  --popover-foreground: #242A32;
+  --primary: #101B2C;
+  --primary-foreground: #F4F0E7;
+  --gold: #C3A477;
+  --navy: #101B2C;
+  --ivory: #F4F0E7;
+  --graphite: #242A32;
+  --taupe: #8C8275;
+  --silver-mist: #D8E0E8;
+  --secondary: #E6DEC8;
+  --secondary-foreground: #242A32;
+  --muted: #E6DEC8;
+  --muted-foreground: #5C5347;
+  --accent: #D8E0E8;
+  --accent-foreground: #101B2C;
+  --destructive: #B9382C;
+  --border: #CFC5B2;
+  --input: #CFC5B2;
+  --ring: #C3A477;
+  --chart-1: #C3A477;
+  --chart-2: #1E7A58;
+  --chart-3: #101B2C;
+  --chart-4: #8C8275;
+  --chart-5: #9AA6B5;
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: #EFE9DC;
+  --sidebar-foreground: #242A32;
+  --sidebar-primary: #101B2C;
+  --sidebar-primary-foreground: #F4F0E7;
+  --sidebar-accent: #E4DCCB;
+  --sidebar-accent-foreground: #101B2C;
+  --sidebar-border: #DCD3C2;
+  --sidebar-ring: #C3A477;
 }
 
 .dark {
-  --background: oklch(0.13 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.16 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.16 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.75 0.14 85); /* Sleek Neon Gold */
-  --primary-foreground: oklch(0.13 0 0);
-  --secondary: oklch(0.20 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.20 0 0);
-  --muted-foreground: oklch(0.70 0 0);
-  --accent: oklch(0.25 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.5 0.2 20);
-  --border: oklch(0.22 0 0);
-  --input: oklch(0.22 0 0);
-  --ring: oklch(0.75 0.14 85);
-  --chart-1: oklch(0.75 0.14 85); /* Gold for charts */
-  --chart-2: oklch(0.6 0.15 150); /* Green for positive */
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.16 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.75 0.14 85);
-  --sidebar-primary-foreground: oklch(0.13 0 0);
-  --sidebar-accent: oklch(0.20 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.22 0 0);
-  --sidebar-ring: oklch(0.75 0.14 85);
+  /* Palet Gelap (Dark Mode):
+     - Background gelap: Midnight Navy #101B2C
+     - Teks utama: Warm Ivory #F4F0E7
+     - Logo alternatif / Primary: Champagne Gold #C3A477
+     - Elemen pendukung: Silver Mist (#B8C4D4 / #17263C) & Muted Taupe (#A69B8D)
+  */
+  --background: #101B2C;
+  --foreground: #F4F0E7;
+  --card: #17263D;
+  --card-foreground: #F4F0E7;
+  --popover: #17263D;
+  --popover-foreground: #F4F0E7;
+  --primary: #C3A477;
+  --primary-foreground: #101B2C;
+  --gold: #C3A477;
+  --navy: #101B2C;
+  --ivory: #F4F0E7;
+  --graphite: #242A32;
+  --taupe: #A69B8D;
+  --silver-mist: #B8C4D4;
+  --secondary: #1E314D;
+  --secondary-foreground: #F4F0E7;
+  --muted: #1B2C46;
+  --muted-foreground: #B8C4D4;
+  --accent: #243A5A;
+  --accent-foreground: #F4F0E7;
+  --destructive: #DC4C3E;
+  --border: #2C4160;
+  --input: #2C4160;
+  --ring: #C3A477;
+  --chart-1: #C3A477;
+  --chart-2: #34D399;
+  --chart-3: #B8C4D4;
+  --chart-4: #A69B8D;
+  --chart-5: #F4F0E7;
+  --sidebar: #142236;
+  --sidebar-foreground: #F4F0E7;
+  --sidebar-primary: #C3A477;
+  --sidebar-primary-foreground: #101B2C;
+  --sidebar-accent: #1B2C45;
+  --sidebar-accent-foreground: #F4F0E7;
+  --sidebar-border: #263954;
+  --sidebar-ring: #C3A477;
 }
 
 @layer base {

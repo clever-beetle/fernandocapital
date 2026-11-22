@@ -14,6 +14,8 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_VERSION).then((cache) => {
       return cache.addAll([
         '/logo.png',
+        '/logo-navy.png',
+        '/logo-gold.png',
         '/icon-192.png',
         '/icon-512.png',
         '/favicon.ico',

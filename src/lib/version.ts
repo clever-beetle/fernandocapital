@@ -20,9 +20,9 @@ export interface VersionInfo {
   history: ReleaseHistoryItem[];
 }
 
-export const _BASE_VERSION = "1.5.0";
-export const _BASE_RELEASE_DATE = "2026-11-19";
-export const _BASE_CODENAME = "Integrasi Sistem Auto-Update, Manajemen Versi & Identitas Logo Baru";
+export const _BASE_VERSION = "1.5.1";
+export const _BASE_RELEASE_DATE = "2026-11-22";
+export const _BASE_CODENAME = "Palet Warna Resmi: Midnight Navy, Champagne Gold & Warm Ivory";
 export const _PUBLIC_CODENAME = "Rilis Stabil • Pembaruan Otomatis Aktif";
 
 const _BULAN_ID = [
@@ -42,6 +42,16 @@ const _BULAN_ID = [
 ];
 
 export const _BASE_RELEASE_HISTORY: ReleaseHistoryItem[] = [
+  {
+    version: "1.5.1",
+    date_id: "22 November 2026",
+    title: "Logo Siluet Baru, Palet Warna Resmi & Mode Gelap Otomatis",
+    highlights: [
+      "Memperbarui seluruh logo menggunakan siluet crest terbaru dalam dua varian kontras otomatis: Logo Utama Midnight Navy (#101B2C) di atas latar Warm Ivory (#F4F0E7) dan Logo Alternatif Champagne Gold (#C3A477) di atas latar Midnight Navy (#101B2C).",
+      "Menerapkan palet warna resmi Fernando Capital: Warm Ivory (#F4F0E7), Midnight Navy (#101B2C), Champagne Gold (#C3A477), Graphite (#242A32), Muted Taupe (#8C8275), dan Silver Mist (#D8E0E8).",
+      "Mengaktifkan tombol sakelar Mode Gelap/Terang interaktif di Header dan halaman Pengaturan dengan jaminan kontras tinggi di seluruh komponen.",
+    ],
+  },
   {
     version: "1.5.0",
     date_id: "19 November 2026",

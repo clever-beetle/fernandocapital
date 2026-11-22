@@ -173,13 +173,20 @@ export function SystemProvider({ initialVersion }: { initialVersion: string }) {
       {showPwaBanner && (
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-card/95 backdrop-blur-2xl border-t border-primary/30 text-foreground flex flex-col sm:flex-row items-center justify-between z-[9999] rounded-t-2xl shadow-[0_-10px_40px_rgba(0,0,0,0.5)] animate-in slide-in-from-bottom-full duration-500">
           <div className="flex items-center gap-4 mb-4 sm:mb-0 w-full max-w-7xl mx-auto">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/15 to-primary/15 border border-white/15 p-1.5 shadow-sm flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-[#FAF7F0] dark:bg-[#1B2C45] border border-[#101B2C]/15 dark:border-[#C3A477]/45 p-1.5 shadow-sm flex items-center justify-center shrink-0">
               <Image
-                src="/logo.png"
+                src="/logo-navy.png"
                 alt="Fernando Capital"
                 width={96}
-                height={33}
-                className="w-full h-auto object-contain"
+                height={34}
+                className="w-full h-auto object-contain block dark:hidden"
+              />
+              <Image
+                src="/logo-gold.png"
+                alt="Fernando Capital"
+                width={96}
+                height={34}
+                className="w-full h-auto object-contain hidden dark:block"
               />
             </div>
             <div className="flex-1">

@@ -64,8 +64,9 @@ export default function RootLayout({
       <body className={`${jakarta.variable} flex min-h-screen flex-col bg-background text-foreground`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
-          enableSystem
+          defaultTheme="light"
+          storageKey="fc-theme-v2"
+          enableSystem={false}
           disableTransitionOnChange
         >
           <Header appVersion={versionInfo.version} />

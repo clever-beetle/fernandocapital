@@ -14,13 +14,20 @@ export function Sidebar() {
     <div className="hidden border-r bg-muted/40 md:block md:w-64 lg:w-72">
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-          <Link href="/" className="flex items-center gap-2.5 font-semibold text-primary">
+          <Link href="/" className="flex items-center gap-2.5 font-semibold text-foreground">
             <Image
-              src="/logo.png"
+              src="/logo-navy.png"
               alt="Fernando Capital Logo"
               width={110}
               height={38}
-              className="h-5 w-auto object-contain"
+              className="h-5 w-auto object-contain block dark:hidden"
+            />
+            <Image
+              src="/logo-gold.png"
+              alt="Fernando Capital Logo"
+              width={110}
+              height={38}
+              className="h-5 w-auto object-contain hidden dark:block"
             />
             <span className="text-lg">Fernando Capital</span>
           </Link>

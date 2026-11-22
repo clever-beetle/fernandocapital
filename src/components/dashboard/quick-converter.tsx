@@ -53,10 +53,10 @@ export function QuickConverter({ currentAntamPrice }: { currentAntamPrice: numbe
   };
 
   return (
-    <Card className="shadow-lg bg-gradient-to-br from-card/80 to-primary/5 backdrop-blur-xl border-border/50">
+    <Card className="shadow-lg bg-gradient-to-br from-card via-card to-[#C3A477]/10 backdrop-blur-xl border-border hover:border-[#C3A477]/50 transition-colors">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
-          <Coins className="h-5 w-5 text-primary" />
+          <Coins className="h-5 w-5 text-[#C3A477]" />
           Kalkulator Cepat
         </CardTitle>
         <CardDescription>Estimasi konversi dana ke emas fisik (otomatis titik ribuan)</CardDescription>
@@ -76,7 +76,7 @@ export function QuickConverter({ currentAntamPrice }: { currentAntamPrice: numbe
                 inputMode="decimal"
                 value={idrText}
                 onChange={(e) => handleIdrChange(e.target.value)}
-                className="auto-ribuan w-full bg-white/5 border border-white/10 rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-primary/50 text-foreground font-medium"
+                className="auto-ribuan w-full bg-background/80 border border-border rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-[#C3A477] text-foreground font-medium"
                 placeholder="10.000.000"
               />
             </div>
@@ -86,9 +86,9 @@ export function QuickConverter({ currentAntamPrice }: { currentAntamPrice: numbe
               type="button"
               onClick={handleSwapDirection}
               title="Balik arah kalkulasi"
-              className="bg-card hover:bg-accent border border-white/10 rounded-full p-2 shadow-lg transition-transform hover:scale-110 active:scale-95"
+              className="bg-card hover:bg-secondary border border-[#C3A477]/40 rounded-full p-2 shadow-md transition-transform hover:scale-110 active:scale-95"
             >
-              <ArrowDownUp className="h-4 w-4 text-primary" />
+              <ArrowDownUp className="h-4 w-4 text-[#C3A477]" />
             </button>
           </div>
           <div className="space-y-2">
@@ -101,7 +101,7 @@ export function QuickConverter({ currentAntamPrice }: { currentAntamPrice: numbe
                 inputMode="decimal"
                 value={gramText}
                 onChange={(e) => handleGramChange(e.target.value)}
-                className="auto-ribuan w-full bg-white/5 border border-white/10 rounded-lg py-2 pl-3 pr-10 text-sm focus:outline-none focus:border-primary/50 text-foreground font-medium"
+                className="auto-ribuan w-full bg-background/80 border border-border rounded-lg py-2 pl-3 pr-10 text-sm focus:outline-none focus:border-[#C3A477] text-foreground font-medium"
                 placeholder="3,56"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
@@ -112,7 +112,7 @@ export function QuickConverter({ currentAntamPrice }: { currentAntamPrice: numbe
           <button
             type="button"
             onClick={handleCalculateSummary}
-            className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/20 py-2 rounded-lg text-sm font-semibold transition-colors mt-2"
+            className="w-full bg-[#101B2C] hover:bg-[#101B2C]/90 text-[#F4F0E7] dark:bg-[#C3A477] dark:hover:bg-[#C3A477]/90 dark:text-[#101B2C] border border-[#C3A477]/30 py-2.5 rounded-lg text-sm font-semibold transition-colors mt-2 shadow-sm"
           >
             Hitung Akurat (+PPh 0.25%)
           </button>
