@@ -20,9 +20,9 @@ export interface VersionInfo {
   history: ReleaseHistoryItem[];
 }
 
-export const _BASE_VERSION = "1.7.0";
+export const _BASE_VERSION = "1.8.0";
 export const _BASE_RELEASE_DATE = "2026-11-26";
-export const _BASE_CODENAME = "Desain Institutional Terminal shadcn/ui, Database-Backed Market Engine & Research CMS";
+export const _BASE_CODENAME = "Tata Letak Baru Workspace Sidebar, Asymmetric Bento Command Deck & Master-Detail Workbench";
 export const _PUBLIC_CODENAME = "Rilis Stabil • Pembaruan Otomatis Aktif";
 
 const _BULAN_ID = [
@@ -42,6 +42,17 @@ const _BULAN_ID = [
 ];
 
 export const _BASE_RELEASE_HISTORY: ReleaseHistoryItem[] = [
+  {
+    version: "1.8.0",
+    date_id: "26 November 2026",
+    title: "Tata Letak Baru Workspace Sidebar, Asymmetric Bento Command Deck & Master-Detail Workbench",
+    highlights: [
+      "Merombak total arsitektur tata letak aplikasi menggunakan Persistent Left Sidebar shadcn/ui (lengkap dengan Live Neon DB Telemetry Dock) dan Sticky Top Command Bar.",
+      "Mengubah struktur beranda menjadi Asymmetric Bento Command Deck: menempatkan Kalkulator Cepat Emas langsung di sudut kanan atas (above-the-fold) berdampingan dengan Command Center & akses cepat 5 Pilar.",
+      "Mengubah Pilar 01 Equity Research menjadi Master-Detail Split Workbench (4 kolom daftar watchlist emiten di kiri + 8 kolom terminal valuasi & rasio di kanan).",
+      "Menyusun Pilar 03 (Transmisi Makro Lintas Aset) dan Pilar 05 (Financial Knowledge Academy) secara berdampingan (Side-by-Side 2-Column Split Workbench).",
+    ],
+  },
   {
     version: "1.7.0",
     date_id: "26 November 2026",
