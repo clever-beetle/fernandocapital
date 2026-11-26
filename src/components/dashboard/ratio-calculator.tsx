@@ -177,8 +177,8 @@ export function RatioCalculator({ liveAntamPrice = DEFAULT_ANTAM_1G_IDR }: { liv
               onClick={() => setActiveTab(t.id)}
               className={`flex items-center gap-2 rounded-xl border px-3.5 py-3 text-xs font-semibold transition-all text-left ${
                 isActive
-                  ? "border-[#101B2C] bg-[#101B2C] text-[#F4F0E7] dark:border-[#C3A477] dark:bg-[#C3A477] dark:text-[#101B2C] shadow-sm"
-                  : "border-border bg-card hover:border-[#C3A477] text-foreground"
+                  ? "border-primary bg-primary text-primary-foreground shadow-xs"
+                  : "border-border bg-card hover:border-primary/50 text-foreground"
               }`}
             >
               <Icon className="w-4 h-4 shrink-0" />

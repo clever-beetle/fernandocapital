@@ -55,97 +55,86 @@
 }
 
 :root {
-  /* Palet Utama (Light Mode — Modern Institutional Editorial Shadcn Theme):
-     - Background utama: Crisp Warm Alabaster #F8F6F1
-     - Card Surface: Pure Elevated Ivory White #FFFFFF
-     - Teks utama: Deep Graphite #0F172A
-     - Primary Brand: Midnight Navy #101B2C
-     - Aksen Emas: Champagne Gold #C3A477
-  */
-  --background: #F8F6F1;
+  /* Calm, Clean Shadcn Slate & Royal Blue Palette (Light Mode) */
+  --background: #F8FAFC;
   --foreground: #0F172A;
   --card: #FFFFFF;
   --card-foreground: #0F172A;
   --popover: #FFFFFF;
   --popover-foreground: #0F172A;
-  --primary: #101B2C;
-  --primary-foreground: #F8F6F1;
-  --gold: #C3A477;
-  --navy: #101B2C;
-  --ivory: #F8F6F1;
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
+  --gold: #2563EB;
+  --navy: #0F172A;
+  --ivory: #F8FAFC;
   --graphite: #0F172A;
   --taupe: #64748B;
   --silver-mist: #E2E8F0;
-  --secondary: #EFECE4;
-  --secondary-foreground: #101B2C;
-  --muted: #EFECE4;
-  --muted-foreground: #525E70;
-  --accent: #E6E1D5;
-  --accent-foreground: #101B2C;
+  --secondary: #F1F5F9;
+  --secondary-foreground: #0F172A;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+  --accent: #EFF6FF;
+  --accent-foreground: #1D4ED8;
   --destructive: #DC2626;
-  --border: #DFD9CC;
-  --input: #DFD9CC;
-  --ring: #C3A477;
-  --chart-1: #C3A477;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #2563EB;
+  --chart-1: #2563EB;
   --chart-2: #059669;
-  --chart-3: #101B2C;
+  --chart-3: #0F172A;
   --chart-4: #64748B;
   --chart-5: #94A3B8;
   --radius: 0.75rem;
-  --sidebar: #F3EFE6;
+  --sidebar: #FFFFFF;
   --sidebar-foreground: #0F172A;
-  --sidebar-primary: #101B2C;
-  --sidebar-primary-foreground: #F8F6F1;
-  --sidebar-accent: #E8E2D4;
-  --sidebar-accent-foreground: #101B2C;
-  --sidebar-border: #DFD9CC;
-  --sidebar-ring: #C3A477;
+  --sidebar-primary: #2563EB;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F1F5F9;
+  --sidebar-accent-foreground: #0F172A;
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: #2563EB;
 }
 
 .dark {
-  /* Palet Gelap (Dark Mode — Institutional Terminal Midnight & Champagne Gold):
-     - Background gelap: Deep Midnight Obsidian #0A111D
-     - Card Surface: Elevated Navy Glass #111C2E
-     - Teks utama: Crisp Warm Ivory #F4F0E7
-     - Primary Brand: Champagne Gold #C3A477
-  */
-  --background: #0A111D;
-  --foreground: #F4F0E7;
-  --card: #111C2E;
-  --card-foreground: #F4F0E7;
-  --popover: #111C2E;
-  --popover-foreground: #F4F0E7;
-  --primary: #C3A477;
-  --primary-foreground: #0A111D;
-  --gold: #C3A477;
-  --navy: #101B2C;
-  --ivory: #F4F0E7;
+  /* Calm, Clean Shadcn Deep Slate & Soft Sky Blue Palette (Dark Mode) */
+  --background: #090D16;
+  --foreground: #F8FAFC;
+  --card: #111827;
+  --card-foreground: #F8FAFC;
+  --popover: #111827;
+  --popover-foreground: #F8FAFC;
+  --primary: #3B82F6;
+  --primary-foreground: #FFFFFF;
+  --gold: #3B82F6;
+  --navy: #090D16;
+  --ivory: #F8FAFC;
   --graphite: #1E293B;
   --taupe: #94A3B8;
   --silver-mist: #CBD5E1;
-  --secondary: #18273F;
-  --secondary-foreground: #F4F0E7;
-  --muted: #16243A;
-  --muted-foreground: #9FB0C7;
-  --accent: #1E314E;
-  --accent-foreground: #F4F0E7;
+  --secondary: #1E293B;
+  --secondary-foreground: #F8FAFC;
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
+  --accent: #1E3A8A;
+  --accent-foreground: #DBEAFE;
   --destructive: #EF4444;
-  --border: #233654;
-  --input: #233654;
-  --ring: #C3A477;
-  --chart-1: #C3A477;
+  --border: #1E293B;
+  --input: #1E293B;
+  --ring: #3B82F6;
+  --chart-1: #3B82F6;
   --chart-2: #34D399;
   --chart-3: #94A3B8;
-  --chart-4: #A69B8D;
-  --chart-5: #F4F0E7;
-  --sidebar: #0D1626;
-  --sidebar-foreground: #F4F0E7;
-  --sidebar-primary: #C3A477;
-  --sidebar-primary-foreground: #0A111D;
-  --sidebar-accent: #17263D;
-  --sidebar-accent-foreground: #F4F0E7;
-  --sidebar-border: #223552;
-  --sidebar-ring: #C3A477;
+  --chart-4: #64748B;
+  --chart-5: #F8FAFC;
+  --sidebar: #0F172A;
+  --sidebar-foreground: #F8FAFC;
+  --sidebar-primary: #3B82F6;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #1E293B;
+  --sidebar-accent-foreground: #F8FAFC;
+  --sidebar-border: #1E293B;
+  --sidebar-ring: #3B82F6;
 }
 
 @layer base {
@@ -153,16 +142,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground antialiased selection:bg-[#C3A477]/25 selection:text-foreground;
-    background-image:
-      radial-gradient(ellipse 80% 50% at 50% -15%, rgba(195, 164, 119, 0.14), transparent),
-      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(16, 27, 44, 0.05), transparent);
-    background-attachment: fixed;
-  }
-  .dark body {
-    background-image:
-      radial-gradient(ellipse 80% 50% at 50% -15%, rgba(195, 164, 119, 0.12), transparent),
-      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(52, 211, 153, 0.04), transparent);
+    @apply bg-background text-foreground antialiased selection:bg-primary/15 selection:text-foreground;
   }
   html {
     @apply font-sans scroll-smooth;

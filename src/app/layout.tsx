@@ -3,7 +3,6 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/layout/header";
-import { Sidebar } from "@/components/layout/sidebar";
 import { SystemProvider } from "@/components/system/system-provider";
 import { getVersionInfo } from "@/lib/version";
 import { Analytics } from "@vercel/analytics/next";
@@ -86,7 +85,7 @@ export default function RootLayout({
   return (
     <html lang="id" className="overflow-x-clip" suppressHydrationWarning>
       <body
-        className={`${jakarta.variable} min-h-screen bg-background text-foreground overflow-x-clip`}
+        className={`${jakarta.variable} flex min-h-screen flex-col bg-background text-foreground overflow-x-clip`}
       >
         <ThemeProvider
           attribute="class"
@@ -95,19 +94,13 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          {/* Modern Shadcn Sidebar + Inset Command Center Shell */}
-          <div className="flex min-h-screen w-full">
-            <Sidebar appVersion={versionInfo.version} />
-            <div className="flex-1 min-w-0 flex flex-col">
-              <Header appVersion={versionInfo.version} />
-              <main className="flex-1 min-w-0 w-full">
-                <div className="mx-auto max-w-[1440px] py-6 px-3 sm:px-6 lg:px-8">
-                  {children}
-                </div>
-              </main>
-              <SystemProvider initialVersion={versionInfo.version} />
+          <Header appVersion={versionInfo.version} />
+          <main className="flex-1 w-full">
+            <div className="mx-auto max-w-6xl py-8 sm:py-10 px-4 sm:px-6 lg:px-8">
+              {children}
             </div>
-          </div>
+          </main>
+          <SystemProvider initialVersion={versionInfo.version} />
           <Toaster />
         </ThemeProvider>
         <Analytics />

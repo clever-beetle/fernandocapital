@@ -8,7 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Coins, ArrowDownUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowDownUp } from "lucide-react";
 import {
   formatRibuanInput,
   parseRibuanInput,
@@ -80,101 +83,89 @@ export function QuickConverter({
     toast.success(
       `Estimasi Emas Fisik: ${grVal.toFixed(3).replace(".", ",")} gram`,
       {
-        description: `Harga termasuk PPh 0.25%: Rp ${formatRibuanInput(Math.round(withTax), true)}`,
+        description: `Harga termasuk PPh 0.25%: Rp ${formatRibuanInput(
+          Math.round(withTax),
+          true
+        )}`,
       }
     );
   };
 
   return (
-    <Card className="shadow-lg bg-gradient-to-br from-card via-card to-[#C3A477]/10 backdrop-blur-xl border-border hover:border-[#C3A477]/50 transition-colors">
+    <Card className="border-border bg-card shadow-xs">
       <CardHeader className="pb-3">
-        <CardTitle className="text-lg font-bold flex items-center gap-2">
-          <Coins className="h-5 w-5 text-[#C3A477]" />
+        <CardTitle className="text-base font-semibold text-foreground">
           Kalkulator Cepat Emas
         </CardTitle>
-        <CardDescription className="text-xs">
+        <CardDescription className="text-xs text-muted-foreground">
           Simulasi &amp; Estimasi Referensi Internal — Bukan Daftar Harga Resmi PT Antam Tbk.
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="space-y-1.5">
-            <label
-              htmlFor="quick-conv-ref-1g"
-              className="text-xs font-medium text-muted-foreground uppercase tracking-wider"
-            >
-              Harga Acuan Simulasi 1g (IDR)
-            </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-medium">
-                Rp
-              </span>
-              <input
-                id="quick-conv-ref-1g"
-                type="text"
-                inputMode="decimal"
-                value={refPriceText}
-                onChange={(e) => handleRefPriceChange(e.target.value)}
-                className="auto-ribuan w-full bg-background/80 border border-border rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-[#C3A477] text-foreground font-mono font-semibold"
-                placeholder="2.725.000"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Punya Dana (IDR)
-            </label>
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-medium">
-                Rp
-              </span>
-              <input
-                type="text"
-                inputMode="decimal"
-                value={idrText}
-                onChange={(e) => handleIdrChange(e.target.value)}
-                className="auto-ribuan w-full bg-background/80 border border-border rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-[#C3A477] text-foreground font-medium"
-                placeholder="10.000.000"
-              />
-            </div>
-          </div>
-          <div className="flex justify-center -my-3 relative z-10">
-            <button
-              type="button"
-              onClick={handleSwapDirection}
-              title="Balik arah kalkulasi"
-              className="bg-card hover:bg-secondary border border-[#C3A477]/40 rounded-full p-2 shadow-md transition-transform hover:scale-110 active:scale-95"
-            >
-              <ArrowDownUp className="h-4 w-4 text-[#C3A477]" />
-            </button>
-          </div>
-          <div className="space-y-2">
-            <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Dapat Emas (Gram)
-            </label>
-            <div className="relative">
-              <input
-                type="text"
-                inputMode="decimal"
-                value={gramText}
-                onChange={(e) => handleGramChange(e.target.value)}
-                className="auto-ribuan w-full bg-background/80 border border-border rounded-lg py-2 pl-3 pr-10 text-sm focus:outline-none focus:border-[#C3A477] text-foreground font-medium"
-                placeholder="3,56"
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
-                gr
-              </span>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={handleCalculateSummary}
-            className="w-full bg-[#101B2C] hover:bg-[#101B2C]/90 text-[#F4F0E7] dark:bg-[#C3A477] dark:hover:bg-[#C3A477]/90 dark:text-[#101B2C] border border-[#C3A477]/30 py-2.5 rounded-lg text-sm font-semibold transition-colors mt-2 shadow-sm"
-          >
-            Hitung Akurat (+PPh 0.25%)
-          </button>
+      <CardContent className="space-y-4">
+        <div className="space-y-1.5">
+          <Label htmlFor="quick-conv-ref-1g" className="text-xs text-muted-foreground">
+            Harga Acuan 1 Gram (Rp)
+          </Label>
+          <Input
+            id="quick-conv-ref-1g"
+            type="text"
+            inputMode="decimal"
+            value={refPriceText}
+            onChange={(e) => handleRefPriceChange(e.target.value)}
+            className="auto-ribuan h-10 font-mono font-semibold"
+            placeholder="2.725.000"
+          />
         </div>
+
+        <div className="space-y-1.5">
+          <Label className="text-xs text-muted-foreground">Nominal Dana (Rp)</Label>
+          <Input
+            type="text"
+            inputMode="decimal"
+            value={idrText}
+            onChange={(e) => handleIdrChange(e.target.value)}
+            className="auto-ribuan h-10 font-mono"
+            placeholder="10.000.000"
+          />
+        </div>
+
+        <div className="flex justify-center -my-1.5">
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={handleSwapDirection}
+            title="Hitung ulang konversi"
+            className="rounded-full"
+          >
+            <ArrowDownUp className="h-3.5 w-3.5 text-muted-foreground" />
+          </Button>
+        </div>
+
+        <div className="space-y-1.5">
+          <Label className="text-xs text-muted-foreground">Estimasi Emas (Gram)</Label>
+          <div className="relative">
+            <Input
+              type="text"
+              inputMode="decimal"
+              value={gramText}
+              onChange={(e) => handleGramChange(e.target.value)}
+              className="auto-ribuan h-10 pr-10 font-mono font-semibold"
+              placeholder="3,67"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground text-xs">
+              gr
+            </span>
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          onClick={handleCalculateSummary}
+          className="w-full h-10 font-semibold"
+        >
+          Hitung Akurat (+PPh 0.25%)
+        </Button>
       </CardContent>
     </Card>
   );

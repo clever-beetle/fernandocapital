@@ -20,9 +20,9 @@ export interface VersionInfo {
   history: ReleaseHistoryItem[];
 }
 
-export const _BASE_VERSION = "1.8.0";
-export const _BASE_RELEASE_DATE = "2026-11-26";
-export const _BASE_CODENAME = "Tata Letak Baru Workspace Sidebar, Asymmetric Bento Command Deck & Master-Detail Workbench";
+export const _BASE_VERSION = "1.9.0";
+export const _BASE_RELEASE_DATE = "2026-11-27";
+export const _BASE_CODENAME = "Desain Minimalis Calm Slate & Blue, Navigasi Bersih & Eksplorasi Bertab";
 export const _PUBLIC_CODENAME = "Rilis Stabil • Pembaruan Otomatis Aktif";
 
 const _BULAN_ID = [
@@ -42,6 +42,16 @@ const _BULAN_ID = [
 ];
 
 export const _BASE_RELEASE_HISTORY: ReleaseHistoryItem[] = [
+  {
+    version: "1.9.0",
+    date_id: "27 November 2026",
+    title: "Desain Minimalis Calm Slate & Blue, Navigasi Bersih & Eksplorasi Bertab",
+    highlights: [
+      "Mengganti palet warna menjadi Neutral Slate & Royal Blue yang bersih, tenang, dan nyaman di mata pada mode terang maupun gelap.",
+      "Menyederhanakan navigasi atas tanpa sidebar ganda, mengurangi kepadatan badge/teks kecil, dan memberi ruang putih (whitespace) yang lega.",
+      "Menyusun eksplorasi Saham, Dampak Ekonomi, dan Panduan Edukasi ke dalam sistem Tab interaktif sehingga hanya menampilkan satu fokus bersih dalam satu waktu.",
+    ],
+  },
   {
     version: "1.8.0",
     date_id: "26 November 2026",

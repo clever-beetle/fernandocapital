@@ -70,13 +70,13 @@ async function runPostDeployVerification() {
     "GET / renders Fernando Capital brand content and gold simulation disclosure"
   );
   assert(
-    homeHtml.includes('data-slot="app-sidebar"') &&
+    homeHtml.includes('data-slot="tabs"') &&
       homeHtml.includes('data-slot="card"') &&
       homeHtml.includes('data-slot="badge"') &&
       homeHtml.includes('data-slot="table"') &&
       homeHtml.includes('data-slot="progress"') &&
       homeHtml.includes("Web Platform Active"),
-    "GET / renders shadcn/ui Sidebar, Card, Badge, Table, Progress slots and Web Platform Active indicator"
+    "GET / renders shadcn/ui Tabs, Card, Badge, Table, Progress slots and Web Platform Active indicator"
   );
 
   const xfo = homeRes.headers.get("x-frame-options");

@@ -21,7 +21,7 @@ function Progress({
       aria-valuemax={100}
       aria-valuenow={Math.round(clamped)}
       className={cn(
-        "relative h-2 w-full overflow-hidden rounded-full bg-secondary/80",
+        "relative h-2 w-full overflow-hidden rounded-full bg-secondary",
         className
       )}
       {...props}
@@ -29,7 +29,7 @@ function Progress({
       <div
         data-slot="progress-indicator"
         className={cn(
-          "h-full rounded-full bg-[#101B2C] dark:bg-[#C3A477] transition-all duration-500 ease-out",
+          "h-full rounded-full bg-primary transition-all duration-500 ease-out",
           indicatorClassName
         )}
         style={{ width: `${clamped}%` }}

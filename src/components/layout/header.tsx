@@ -1,16 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Settings,
-  Menu,
-  Sparkles,
-  ArrowUpRight,
-  Radio,
-  Calculator,
-  BookOpen,
-} from "lucide-react";
+import { Settings, Menu, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -19,127 +10,93 @@ import {
   getDashboardMarketOverview,
 } from "@/lib/market-data/read";
 
-const PILLAR_NAV = [
-  { num: "01", label: "Equity Research", href: "/#equity-research" },
-  { num: "02", label: "Market Intelligence", href: "/#market-intelligence" },
-  { num: "03", label: "Economic Insights", href: "/#economic-insights" },
-  { num: "04", label: "Data & Tools", href: "/calculator" },
-  { num: "05", label: "Knowledge", href: "/#knowledge" },
+const MAIN_NAV = [
+  { label: "Beranda", href: "/" },
+  { label: "Kalkulator", href: "/calculator" },
+  { label: "Riset", href: "/research" },
+  { label: "Studio", href: "/studio" },
 ];
 
-export async function Header({ appVersion = "1.8.0" }: { appVersion?: string }) {
+export async function Header({ appVersion = "1.9.0" }: { appVersion?: string }) {
   const overview = await getDashboardMarketOverview();
   const usdIdr = overview.indicators.USD_IDR;
-  const ihsg = overview.indicators.IHSG;
-  const biRate = overview.indicators.BI_RATE;
   const formattedUsdIdr = formatIdrPerUsdDisplay(usdIdr.trimmedDecimalValue);
 
   return (
-    <header className="sticky top-0 z-30 w-full border-b border-border/80 bg-background/85 backdrop-blur-2xl supports-[backdrop-filter]:bg-background/75 shadow-2xs">
-      <div className="flex h-14 sm:h-16 items-center justify-between gap-2 px-3 sm:px-6 w-full">
-        {/* Left: Mobile Drawer Trigger + Mobile Brand + Desktop Workspace Status */}
-        <div className="flex items-center gap-2.5 min-w-0">
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-card/90 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        {/* Left: Mobile Menu + Clean Brand */}
+        <div className="flex items-center gap-3">
           <Sheet>
             <SheetTrigger
               render={
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="icon"
-                  className="lg:hidden shrink-0 h-9 w-9 rounded-xl border-border/80 bg-card/80 shadow-2xs"
+                  className="md:hidden shrink-0 h-9 w-9 rounded-lg"
                 />
               }
             >
-              <Menu className="h-4 w-4" />
+              <Menu className="h-5 w-5" />
               <span className="sr-only">Toggle Menu</span>
             </SheetTrigger>
             <SheetContent
               side="left"
-              className="data-[side=left]:w-[290px] data-[side=left]:sm:w-[330px] max-w-[90vw] p-5 pt-6 flex flex-col justify-between bg-background border-border overflow-y-auto"
+              className="data-[side=left]:w-[280px] max-w-[88vw] p-6 flex flex-col justify-between bg-card border-border"
             >
-              <div className="space-y-5">
-                <Link href="/" className="flex items-center gap-2.5 group pb-3 pr-8">
-                  <div className="shrink-0 px-2.5 py-1.5 bg-[#FAF7F0] dark:bg-[#18273F] border border-[#101B2C]/20 dark:border-[#C3A477]/45 rounded-xl flex items-center justify-center shadow-xs">
+              <div className="space-y-6">
+                <Link href="/" className="flex items-center gap-2.5">
+                  <div className="px-2 py-1.5 bg-secondary rounded-lg border border-border flex items-center justify-center">
                     <Image
                       src="/logo-navy.png"
-                      alt="Fernando Capital Logo (Midnight Navy)"
-                      width={130}
-                      height={46}
+                      alt="Fernando Capital Logo"
+                      width={110}
+                      height={38}
                       priority
-                      className="h-4 w-auto shrink-0 object-contain block dark:hidden"
+                      className="h-4 w-auto object-contain block dark:hidden"
                     />
                     <Image
                       src="/logo-gold.png"
-                      alt="Fernando Capital Logo (Champagne Gold)"
-                      width={130}
-                      height={46}
+                      alt="Fernando Capital Logo"
+                      width={110}
+                      height={38}
                       priority
-                      className="h-4 w-auto shrink-0 object-contain hidden dark:block"
+                      className="h-4 w-auto object-contain hidden dark:block"
                     />
                   </div>
-                  <div className="min-w-0">
-                    <span className="block text-sm font-extrabold tracking-tight text-foreground whitespace-nowrap">
-                      FERNANDO CAPITAL
-                    </span>
-                    <span className="block text-[10px] font-mono uppercase tracking-wider text-muted-foreground whitespace-nowrap">
-                      Financial Intelligence
-                    </span>
-                  </div>
+                  <span className="text-base font-bold tracking-tight text-foreground">
+                    Fernando Capital
+                  </span>
                 </Link>
 
                 <Separator />
 
-                <div className="space-y-1.5">
-                  <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground px-2 mb-2">
-                    5 Pilar Utama
-                  </p>
-                  {PILLAR_NAV.map((item) => (
+                <nav className="space-y-1">
+                  {MAIN_NAV.map((item) => (
                     <Link
-                      key={item.num}
+                      key={item.href}
                       href={item.href}
-                      className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-foreground hover:bg-secondary/80 transition-colors"
+                      className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
                     >
-                      <span className="flex items-center gap-2.5">
-                        <Badge
-                          variant="default"
-                          className="font-mono text-[10px] px-1.5 py-0 h-5 rounded-md bg-[#101B2C] text-[#F4F0E7] dark:bg-[#C3A477] dark:text-[#101B2C] font-bold"
-                        >
-                          {item.num}
-                        </Badge>
-                        <span>{item.label}</span>
-                      </span>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground" />
+                      <span>{item.label}</span>
+                      <ArrowUpRight className="w-4 h-4 text-muted-foreground" />
                     </Link>
                   ))}
-                </div>
-
-                <Separator />
-
-                <div className="space-y-2">
-                  <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground px-2">
-                    Sistem &amp; Otomasi
-                  </p>
-                  <Link
-                    href="/studio"
-                    className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-semibold bg-[#101B2C] text-[#F4F0E7] dark:bg-[#C3A477] dark:text-[#101B2C] shadow-xs"
-                  >
-                    <Sparkles className="w-4 h-4 shrink-0" />
-                    <span>AI Research Studio (70/30)</span>
-                  </Link>
                   <Link
                     href="/settings"
-                    className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground hover:bg-secondary/80"
+                    className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-foreground hover:bg-secondary transition-colors"
                   >
-                    <Settings className="w-4 h-4 shrink-0" />
-                    <span>Pengaturan &amp; Versi Sistem</span>
+                    <span>Pengaturan</span>
+                    <ArrowUpRight className="w-4 h-4 text-muted-foreground" />
                   </Link>
-                </div>
+                </nav>
               </div>
 
-              <div className="pt-4 mt-6 border-t border-border flex items-center justify-between text-[11px] font-mono text-muted-foreground">
+              <div className="pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
                 <span>Fernando Capital</span>
                 <Link
                   href="/settings?tab=version"
-                  className="rounded-full bg-secondary px-2.5 py-0.5 border border-border text-foreground font-semibold"
+                  className="font-mono font-medium text-foreground"
                 >
                   v{appVersion}
                 </Link>
@@ -147,114 +104,63 @@ export async function Header({ appVersion = "1.8.0" }: { appVersion?: string }) 
             </SheetContent>
           </Sheet>
 
-          {/* Mobile Brand (< lg) */}
-          <Link href="/" className="flex lg:hidden items-center gap-2 min-w-0">
-            <div className="shrink-0 px-2 py-1 bg-card dark:bg-[#17263D] border border-border/90 rounded-lg flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+            <div className="px-2.5 py-1.5 bg-secondary/80 dark:bg-secondary border border-border rounded-lg flex items-center justify-center">
               <Image
                 src="/logo-navy.png"
                 alt="Fernando Capital Logo"
-                width={100}
-                height={36}
+                width={120}
+                height={42}
                 priority
-                className="h-3.5 w-auto object-contain block dark:hidden"
+                className="h-4 sm:h-5 w-auto object-contain block dark:hidden"
               />
               <Image
                 src="/logo-gold.png"
                 alt="Fernando Capital Logo"
-                width={100}
-                height={36}
+                width={120}
+                height={42}
                 priority
-                className="h-3.5 w-auto object-contain hidden dark:block"
+                className="h-4 sm:h-5 w-auto object-contain hidden dark:block"
               />
             </div>
-            <span className="text-xs sm:text-sm font-extrabold tracking-tight text-foreground truncate">
-              FERNANDO CAPITAL
+            <span className="text-sm sm:text-base font-bold tracking-tight text-foreground whitespace-nowrap">
+              Fernando Capital
             </span>
           </Link>
-
-          {/* Desktop Command Bar Telemetry Strip (lg+) */}
-          <div className="hidden lg:flex items-center gap-2 text-xs font-mono">
-            <Badge
-              variant="outline"
-              className="font-mono text-[11px] px-2.5 py-1 h-auto rounded-lg border-border bg-card shadow-2xs"
-            >
-              <span className="h-2 w-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse" />
-              USD/IDR (ECB):{" "}
-              <strong className="ml-1 text-foreground">
-                {formattedUsdIdr || "Belum Tersedia"}
-              </strong>
-              {usdIdr.sourceDate ? (
-                <span className="ml-1 text-muted-foreground">({usdIdr.sourceDate})</span>
-              ) : null}
-            </Badge>
-
-            <Badge
-              variant="secondary"
-              className="hidden xl:inline-flex font-mono text-[11px] px-2.5 py-1 h-auto rounded-lg"
-            >
-              IHSG:{" "}
-              <span className="ml-1 text-muted-foreground">
-                {ihsg.trimmedDecimalValue ?? "Pending Lisensi IDX"}
-              </span>
-            </Badge>
-
-            <Badge
-              variant="secondary"
-              className="hidden 2xl:inline-flex font-mono text-[11px] px-2.5 py-1 h-auto rounded-lg"
-            >
-              BI-Rate:{" "}
-              <span className="ml-1 text-muted-foreground">
-                {biRate.trimmedDecimalValue
-                  ? `${biRate.trimmedDecimalValue}%`
-                  : "Verifikasi Editor"}
-              </span>
-            </Badge>
-          </div>
         </div>
 
-        {/* Right Command Bar Quick Actions */}
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          <Link
-            href="/calculator"
-            className="hidden md:inline-flex items-center gap-1.5 rounded-xl border border-border bg-card hover:border-[#C3A477] px-3 py-1.5 text-xs font-semibold text-foreground shadow-2xs transition-colors"
-          >
-            <Calculator className="w-3.5 h-3.5 text-[#C3A477]" />
-            <span>5 Kalkulator</span>
-          </Link>
+        {/* Center: Clean Minimalist Navigation */}
+        <nav className="hidden md:flex items-center gap-1">
+          {MAIN_NAV.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="rounded-lg px-3.5 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/70 transition-colors"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
 
-          <Link
-            href="/research"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-border bg-card hover:border-[#C3A477] px-3 py-1.5 text-xs font-semibold text-foreground shadow-2xs transition-colors"
-          >
-            <BookOpen className="w-3.5 h-3.5 text-[#C3A477]" />
-            <span>Riset</span>
-          </Link>
-
-          <Link
-            href="/studio"
-            title="AI Research & Automation Studio (70/30)"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-xl bg-[#101B2C] text-[#F4F0E7] dark:bg-[#C3A477] dark:text-[#101B2C] hover:opacity-90 px-3 py-1.5 text-xs font-bold shadow-xs transition-all shrink-0"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-[#C3A477] dark:text-[#101B2C] shrink-0" />
-            <span>AI Studio</span>
-            <span className="font-mono text-[10px] opacity-85">70/30</span>
-          </Link>
-
-          <Link
-            href="/settings?tab=version"
-            className="inline-flex items-center gap-1 rounded-xl border border-[#C3A477]/45 bg-[#C3A477]/15 px-2.5 py-1.5 text-[11px] font-mono font-bold text-foreground hover:bg-[#C3A477]/25 transition-colors"
-          >
-            <Radio className="w-3 h-3 text-emerald-500 shrink-0" />
-            <span>v{appVersion}</span>
-          </Link>
+        {/* Right: Quiet USD/IDR Pill + Theme + Settings */}
+        <div className="flex items-center gap-2 shrink-0">
+          {formattedUsdIdr && (
+            <div className="hidden lg:inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs text-muted-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <span>USD/IDR</span>
+              <strong className="font-semibold text-foreground">
+                {formattedUsdIdr}
+              </strong>
+            </div>
+          )}
 
           <ModeToggle />
 
-          <Link href="/settings" title="Pengaturan & Versi Sistem" className="shrink-0">
+          <Link href="/settings" title="Pengaturan">
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
-              className="rounded-xl h-9 w-9 border-border/80 bg-card/80 hover:border-[#C3A477] shadow-2xs"
+              className="rounded-lg h-9 w-9 text-muted-foreground hover:text-foreground"
             >
               <Settings className="h-4 w-4" />
             </Button>
