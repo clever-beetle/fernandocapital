@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -17,37 +17,51 @@ import {
   Laptop,
   Database,
   Sparkles,
+  Lock,
 } from "lucide-react";
 import type { VersionInfo } from "@/lib/version";
+import { AdminLoginCard, AdminLogoutButton } from "@/components/system/admin-login-card";
 import { toast } from "sonner";
 
-export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: VersionInfo }) {
+export function SettingsClient({
+  initialVersionInfo,
+  isAdmin = false,
+  isAuthConfigured = true,
+}: {
+  initialVersionInfo: VersionInfo;
+  isAdmin?: boolean;
+  isAuthConfigured?: boolean;
+}) {
   const searchParams = useSearchParams();
   const { theme, setTheme } = useTheme();
-  const [activeTab, setActiveTab] = useState<"appearance" | "integrations" | "version">("version");
-  const [versionInfo, setVersionInfo] = useState<VersionInfo>(initialVersionInfo);
-  const [isDevUser, setIsDevUser] = useState(true);
+  const isHydrated = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+  const currentTheme = isHydrated ? theme : "light";
+  const tabParam = searchParams.get("tab");
+  const initialTab: "appearance" | "integrations" | "version" =
+    tabParam === "appearance" || tabParam === "integrations" || tabParam === "version"
+      ? tabParam
+      : "version";
+  const [selectedTab, setSelectedTab] = useState<"appearance" | "integrations" | "version" | null>(
+    null
+  );
+  const activeTab = selectedTab ?? initialTab;
+  const setActiveTab = (tab: "appearance" | "integrations" | "version") => setSelectedTab(tab);
+
+  const [fetchedVersionInfo, setFetchedVersionInfo] = useState<VersionInfo | null>(null);
+  const versionInfo =
+    fetchedVersionInfo && fetchedVersionInfo.is_detailed === initialVersionInfo.is_detailed
+      ? fetchedVersionInfo
+      : initialVersionInfo;
+  const setVersionInfo = (info: VersionInfo) => setFetchedVersionInfo(info);
+
   const [showDevDetails, setShowDevDetails] = useState(true);
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const [updateStatusMsg, setUpdateStatusMsg] = useState("");
   const [syncingGold, setSyncingGold] = useState(false);
-
-  useEffect(() => {
-    const tabParam = searchParams.get("tab");
-    if (tabParam === "appearance" || tabParam === "integrations" || tabParam === "version") {
-      setActiveTab(tabParam);
-    }
-    const savedDev = localStorage.getItem("fc_dev_mode");
-    if (savedDev !== null) {
-      setIsDevUser(savedDev === "1");
-    }
-  }, [searchParams]);
-
-  const handleToggleDevUser = (val: boolean) => {
-    setIsDevUser(val);
-    localStorage.setItem("fc_dev_mode", val ? "1" : "0");
-    toast.success(val ? "Mode Developer diaktifkan" : "Mode Pengguna Biasa diaktifkan");
-  };
 
   const handleCheckUpdate = async () => {
     setCheckingUpdate(true);
@@ -73,22 +87,24 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
   };
 
   const handleManualGoldSync = async () => {
+    if (!isAdmin) {
+      toast.error("Autentikasi Editor/Admin diperlukan untuk menyinkronkan database.");
+      return;
+    }
     setSyncingGold(true);
     try {
-      const res = await fetch("/api/cron", {
-        headers: {
-          Authorization: "Bearer fernando_12345",
-        },
+      const res = await fetch("/api/admin/sync-gold", {
+        method: "POST",
         cache: "no-store",
       });
       const data = await res.json();
       if (res.ok && data?.success) {
         toast.success("Harga emas berhasil disinkronkan!", {
-          description: `Spot XAU/USD & Estimasi Antam telah diperbarui di database.`,
+          description: "Spot XAU/USD & Estimasi Antam telah diperbarui di database.",
         });
       } else {
-        toast.error("Sinkronisasi gagal", {
-          description: data?.error || "Periksa koneksi database.",
+        toast.error("Sinkronisasi tidak dijalankan", {
+          description: data?.error || "Periksa sesi autentikasi atau masa jeda cooldown.",
         });
       }
     } catch {
@@ -116,37 +132,40 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
 
   return (
     <div className="max-w-6xl mx-auto w-full pb-12">
-      {/* Top Heading ala Treasury Flow */}
+      {/* Top Heading */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="space-y-0.5">
           <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Pengaturan</h2>
           <p className="text-sm md:text-base text-muted-foreground">
-            Kelola preferensi sistem, sinkronisasi harga emas otomatis, integrasi PWA, dan riwayat versi aplikasi.
+            Kelola preferensi tampilan publik, integrasi PWA, autentikasi editor, dan riwayat versi aplikasi.
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => setActiveTab("version")}
-          title="Lihat versi aplikasi & riwayat pembaruan"
-          className="inline-flex items-center gap-2 self-start sm:self-auto rounded-full border border-border bg-card hover:bg-accent hover:text-accent-foreground px-3.5 py-1.5 text-xs font-medium text-foreground transition-colors shadow-sm"
-        >
-          <Image
-            src="/logo-navy.png"
-            alt="Fernando Capital"
-            width={40}
-            height={14}
-            className="h-3.5 w-auto object-contain block dark:hidden"
-          />
-          <Image
-            src="/logo-gold.png"
-            alt="Fernando Capital"
-            width={40}
-            height={14}
-            className="h-3.5 w-auto object-contain hidden dark:block"
-          />
-          <span className="font-semibold">Versi v{versionInfo.version}</span>
-          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-        </button>
+        <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+          {isAdmin && <AdminLogoutButton />}
+          <button
+            type="button"
+            onClick={() => setActiveTab("version")}
+            title="Lihat versi aplikasi & riwayat pembaruan"
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card hover:bg-accent hover:text-accent-foreground px-3.5 py-1.5 text-xs font-medium text-foreground transition-colors shadow-sm"
+          >
+            <Image
+              src="/logo-navy.png"
+              alt="Fernando Capital"
+              width={40}
+              height={14}
+              className="h-3.5 w-auto object-contain block dark:hidden"
+            />
+            <Image
+              src="/logo-gold.png"
+              alt="Fernando Capital"
+              width={40}
+              height={14}
+              className="h-3.5 w-auto object-contain hidden dark:block"
+            />
+            <span className="font-semibold">Versi v{versionInfo.version}</span>
+            <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
+          </button>
+        </div>
       </div>
 
       <div className="shrink-0 bg-border h-[1px] w-full my-6" />
@@ -194,9 +213,15 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
               }`}
             >
               <Blocks className="w-4 h-4 mr-2.5 text-emerald-500" />
-              Integrasi &amp; Data
-              <span className="ml-auto hidden lg:inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-500">
-                Aktif
+              Integrasi &amp; Admin
+              <span
+                className={`ml-auto hidden lg:inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                  isAdmin
+                    ? "bg-emerald-500/15 text-emerald-500"
+                    : "bg-secondary text-muted-foreground"
+                }`}
+              >
+                {isAdmin ? "Editor" : "Publik"}
               </span>
             </button>
           </nav>
@@ -204,7 +229,7 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
 
         {/* Main Tab Content */}
         <div className="flex-1 lg:max-w-3xl">
-          {/* TAB 1: VERSI APLIKASI (100% Setara Treasury Flow) */}
+          {/* TAB 1: VERSI APLIKASI */}
           {activeTab === "version" && (
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -258,7 +283,7 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                         </span>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        {isDevUser && showDevDetails
+                        {isAdmin && showDevDetails && versionInfo.is_detailed
                           ? versionInfo.codename
                           : "Rilis Stabil • Pembaruan Otomatis Aktif"}
                       </p>
@@ -290,27 +315,27 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                       ({versionInfo.history.length} versi tercatat)
                     </span>
                   </div>
-                  {isDevUser && (
+                  {isAdmin && versionInfo.is_detailed && (
                     <div className="flex items-center gap-2">
                       <span
                         className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 text-[11px] font-semibold text-amber-600 dark:text-amber-300"
-                        title="Rincian perubahan hanya terlihat oleh akun Developer/Admin"
+                        title="Rincian perubahan hanya terlihat oleh sesi Editor/Admin terverifikasi"
                       >
-                        <Shield className="w-3 h-3" /> Khusus Developer
+                        <Shield className="w-3 h-3" /> Khusus Editor / Developer
                       </span>
                       <button
                         type="button"
                         onClick={() => setShowDevDetails((prev) => !prev)}
                         className="inline-flex items-center gap-1 rounded-lg border border-border bg-background hover:bg-accent px-2.5 py-1 text-xs font-medium text-foreground transition-colors"
                       >
-                        <span>{showDevDetails ? "Lihat Tampilan User" : "Tampilkan Detail Dev"}</span>
+                        <span>{showDevDetails ? "Lihat Tampilan Publik" : "Tampilkan Detail Dev"}</span>
                       </button>
                     </div>
                   )}
                 </div>
 
-                {/* Tampilan Detail Khusus Developer / Admin */}
-                {isDevUser && showDevDetails ? (
+                {/* Tampilan Detail Khusus Editor / Admin (Server-Verified Only) */}
+                {isAdmin && versionInfo.is_detailed && showDevDetails ? (
                   <div className="space-y-3">
                     {versionInfo.history.map((rel, idx) => {
                       const isFirst = idx === 0;
@@ -360,7 +385,7 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                     })}
                   </div>
                 ) : (
-                  /* Tampilan Ringkas untuk Pengguna Biasa (Tanpa Detail Update) */
+                  /* Tampilan Ringkas untuk Pengguna Publik */
                   <div className="rounded-xl border border-border bg-card shadow-sm divide-y divide-border overflow-hidden">
                     {versionInfo.history.map((rel, idx) => {
                       const isFirst = idx === 0;
@@ -400,13 +425,13 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
             </div>
           )}
 
-          {/* TAB 2: TAMPILAN & SISTEM */}
+          {/* TAB 2: TAMPILAN & SISTEM (Preferensi Publik) */}
           {activeTab === "appearance" && (
             <div className="space-y-6">
               <div>
                 <h3 className="text-lg font-medium">Tampilan &amp; Sistem</h3>
                 <p className="text-sm text-muted-foreground">
-                  Sesuaikan tema antarmuka, format input otomatis, dan hak akses tampilan rincian versi.
+                  Sesuaikan tema antarmuka perangkat Anda dan lihat standar palet warna Fernando Capital.
                 </p>
               </div>
               <div className="shrink-0 bg-border h-[1px] w-full" />
@@ -419,7 +444,7 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                       type="button"
                       onClick={() => setTheme("light")}
                       className={`flex flex-col items-center gap-2 rounded-xl border p-4 text-xs font-medium transition-all ${
-                        theme === "light"
+                        currentTheme === "light"
                           ? "border-[#C3A477] bg-[#C3A477]/15 text-foreground font-semibold"
                           : "border-border bg-background hover:bg-accent"
                       }`}
@@ -431,7 +456,7 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                       type="button"
                       onClick={() => setTheme("dark")}
                       className={`flex flex-col items-center gap-2 rounded-xl border p-4 text-xs font-medium transition-all ${
-                        theme === "dark"
+                        currentTheme === "dark"
                           ? "border-[#C3A477] bg-[#C3A477]/15 text-foreground font-semibold"
                           : "border-border bg-background hover:bg-accent"
                       }`}
@@ -443,7 +468,7 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                       type="button"
                       onClick={() => setTheme("system")}
                       className={`flex flex-col items-center gap-2 rounded-xl border p-4 text-xs font-medium transition-all ${
-                        theme === "system"
+                        currentTheme === "system"
                           ? "border-[#C3A477] bg-[#C3A477]/15 text-foreground font-semibold"
                           : "border-border bg-background hover:bg-accent"
                       }`}
@@ -499,74 +524,23 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                     <CheckCircle2 className="w-3.5 h-3.5" /> Aktif
                   </span>
                 </div>
-
-                <div className="shrink-0 bg-border/60 h-[1px] w-full" />
-
-                <div className="flex items-center justify-between gap-4">
-                  <div className="space-y-0.5">
-                    <h4 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                      <span>Mode Akses Developer / Admin</span>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 border border-amber-500/30 px-2 py-0.5 text-[10px] font-semibold text-amber-500">
-                        <Shield className="w-3 h-3" /> Dev
-                      </span>
-                    </h4>
-                    <p className="text-xs text-muted-foreground">
-                      Menampilkan rincian teknis riwayat pembaruan setiap versi aplikasi di tab Versi Aplikasi.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleToggleDevUser(!isDevUser)}
-                    className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
-                      isDevUser
-                        ? "bg-primary text-primary-foreground border-primary"
-                        : "bg-background text-muted-foreground border-border hover:bg-accent"
-                    }`}
-                  >
-                    {isDevUser ? "Developer Aktif" : "Mode User Biasa"}
-                  </button>
-                </div>
               </div>
             </div>
           )}
 
-          {/* TAB 3: INTEGRASI & DATA */}
+          {/* TAB 3: INTEGRASI & ADMIN */}
           {activeTab === "integrations" && (
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-medium">Integrasi &amp; Data</h3>
+                <h3 className="text-lg font-medium">Integrasi &amp; Kontrol Administratif</h3>
                 <p className="text-sm text-muted-foreground">
-                  Sinkronisasi database harga emas real-time, Service Worker PWA, dan pipeline pembaruan otomatis.
+                  Manajemen cache PWA perangkat serta kontrol sinkronisasi database khusus Editor/Admin terverifikasi.
                 </p>
               </div>
               <div className="shrink-0 bg-border h-[1px] w-full" />
 
+              {/* Public Client-Side PWA Cache Refresh */}
               <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <Database className="w-4 h-4 text-primary" />
-                      <h4 className="text-sm font-semibold text-foreground">
-                        Sinkronisasi Harga Emas Global &amp; Antam
-                      </h4>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Tarik data spot XAU/USD &amp; kurs USD/IDR terbaru ke database Neon PostgreSQL sekarang.
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleManualGoldSync}
-                    disabled={syncingGold}
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 text-xs font-semibold shadow-sm transition-colors disabled:opacity-60 shrink-0"
-                  >
-                    <RefreshCw className={`w-3.5 h-3.5 ${syncingGold ? "animate-spin" : ""}`} />
-                    <span>{syncingGold ? "Menyinkronkan..." : "Sinkronkan Sekarang"}</span>
-                  </button>
-                </div>
-
-                <div className="shrink-0 bg-border/60 h-[1px] w-full" />
-
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
@@ -576,7 +550,7 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                       </h4>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Bersihkan cache statis lama di perangkat dan muat ulang aset versi terbaru dari server.
+                      Bersihkan cache statis lama di perangkat ini dan muat ulang aset versi terbaru dari server.
                     </p>
                   </div>
                   <button
@@ -589,6 +563,58 @@ export function SettingsClient({ initialVersionInfo }: { initialVersionInfo: Ver
                   </button>
                 </div>
               </div>
+
+              {/* Protected Administrative Section */}
+              {isAdmin ? (
+                <div className="rounded-xl border border-[#C3A477]/50 bg-card p-6 shadow-sm space-y-5">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-4 h-4 text-[#C3A477]" />
+                      <h4 className="text-sm font-bold text-foreground">
+                        Panel Kontrol Editor Terverifikasi
+                      </h4>
+                    </div>
+                    <AdminLogoutButton />
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Database className="w-4 h-4 text-primary" />
+                        <h4 className="text-sm font-semibold text-foreground">
+                          Sinkronisasi Manual Harga Emas Global &amp; Antam
+                        </h4>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Tarik data spot XAU/USD &amp; kurs USD/IDR terbaru ke database Neon PostgreSQL
+                        (dilindungi batas cooldown 60 detik &amp; deduplikasi otomatis).
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleManualGoldSync}
+                      disabled={syncingGold}
+                      className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 text-xs font-semibold shadow-sm transition-colors disabled:opacity-60 shrink-0"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${syncingGold ? "animate-spin" : ""}`} />
+                      <span>{syncingGold ? "Menyinkronkan..." : "Sinkronkan Sekarang"}</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-muted-foreground">
+                    <Lock className="w-3.5 h-3.5 text-[#C3A477]" />
+                    <span>Operasi Administratif Terkunci</span>
+                  </div>
+                  <AdminLoginCard
+                    compact
+                    isConfigured={isAuthConfigured}
+                    title="Login Editor untuk Kontrol Database & Detail Versi"
+                    description="Sinkronisasi manual database harga emas dan rincian teknis riwayat versi dilindungi oleh sesi HTTP-only yang diverifikasi di server."
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>

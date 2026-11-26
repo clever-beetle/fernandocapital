@@ -1,12 +1,12 @@
-import { MetadataRoute } from 'next';
+import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/api/'], // Jangan telusuri halaman rahasia API
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/api/", "/studio", "/settings"],
     },
-    sitemap: 'https://fernando-capital.vercel.app/sitemap.xml',
+    sitemap: "https://fernandocapital.web.id/sitemap.xml",
   };
 }

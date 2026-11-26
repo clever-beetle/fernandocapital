@@ -1,55 +1,88 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Coins, ArrowDownUp } from "lucide-react";
-import { formatRibuanInput, parseRibuanInput } from "@/components/system/system-provider";
+import {
+  formatRibuanInput,
+  parseRibuanInput,
+} from "@/components/system/system-provider";
+import { DEFAULT_ANTAM_1G_IDR } from "@/lib/gold-pricing";
 import { toast } from "sonner";
 
-export function QuickConverter({ currentAntamPrice }: { currentAntamPrice: number }) {
-  const effectivePrice = currentAntamPrice > 0 ? currentAntamPrice : 2725000;
+export function QuickConverter({
+  currentAntamPrice,
+}: {
+  currentAntamPrice: number;
+}) {
+  const initialRef =
+    currentAntamPrice > 0 ? Math.round(currentAntamPrice) : DEFAULT_ANTAM_1G_IDR;
+  const [refPriceText, setRefPriceText] = useState(() =>
+    formatRibuanInput(initialRef, true)
+  );
+  const parsedRef = parseRibuanInput(refPriceText);
+  const effectivePrice =
+    Number.isFinite(parsedRef) && parsedRef > 0
+      ? Math.round(parsedRef)
+      : DEFAULT_ANTAM_1G_IDR;
+
   const [idrText, setIdrText] = useState("10.000.000");
   const [gramText, setGramText] = useState(() => {
-    const gr = 10000000 / effectivePrice;
+    const gr = 10000000 / initialRef;
     return gr.toFixed(2).replace(".", ",");
   });
-  const [mode, setMode] = useState<"idr-to-gram" | "gram-to-idr">("idr-to-gram");
 
-  useEffect(() => {
-    if (mode === "idr-to-gram") {
-      const idrVal = parseRibuanInput(idrText);
-      const gr = idrVal > 0 ? idrVal / effectivePrice : 0;
-      setGramText(gr > 0 ? gr.toFixed(2).replace(".", ",") : "0");
-    } else {
-      const grVal = parseRibuanInput(gramText);
-      const idr = grVal > 0 ? Math.round(grVal * effectivePrice) : 0;
-      setIdrText(idr > 0 ? formatRibuanInput(idr, true) : "0");
-    }
-  }, [effectivePrice, idrText, gramText, mode]);
+  const handleRefPriceChange = (val: string) => {
+    const formatted = formatRibuanInput(val, false);
+    setRefPriceText(formatted);
+    const nextRef = parseRibuanInput(formatted);
+    const activeRef =
+      Number.isFinite(nextRef) && nextRef > 0
+        ? Math.round(nextRef)
+        : DEFAULT_ANTAM_1G_IDR;
+    const idrVal = parseRibuanInput(idrText);
+    const gr = idrVal > 0 ? idrVal / activeRef : 0;
+    setGramText(gr > 0 ? gr.toFixed(2).replace(".", ",") : "0");
+  };
 
   const handleIdrChange = (val: string) => {
-    setMode("idr-to-gram");
     const formatted = formatRibuanInput(val, false);
     setIdrText(formatted);
+    const idrVal = parseRibuanInput(formatted);
+    const gr = idrVal > 0 ? idrVal / effectivePrice : 0;
+    setGramText(gr > 0 ? gr.toFixed(2).replace(".", ",") : "0");
   };
 
   const handleGramChange = (val: string) => {
-    setMode("gram-to-idr");
     const formatted = formatRibuanInput(val, false);
     setGramText(formatted);
+    const grVal = parseRibuanInput(formatted);
+    const idr = grVal > 0 ? Math.round(grVal * effectivePrice) : 0;
+    setIdrText(idr > 0 ? formatRibuanInput(idr, true) : "0");
   };
 
   const handleSwapDirection = () => {
-    setMode((prev) => (prev === "idr-to-gram" ? "gram-to-idr" : "idr-to-gram"));
+    const idrVal = parseRibuanInput(idrText);
+    const gr = idrVal > 0 ? idrVal / effectivePrice : 0;
+    setGramText(gr > 0 ? gr.toFixed(2).replace(".", ",") : "0");
   };
 
   const handleCalculateSummary = () => {
     const idrVal = parseRibuanInput(idrText);
     const grVal = idrVal / effectivePrice;
     const withTax = idrVal * 1.0025;
-    toast.success(`Estimasi Emas Fisik: ${grVal.toFixed(3).replace(".", ",")} gram`, {
-      description: `Harga termasuk PPh 0.25%: Rp ${formatRibuanInput(Math.round(withTax), true)}`,
-    });
+    toast.success(
+      `Estimasi Emas Fisik: ${grVal.toFixed(3).replace(".", ",")} gram`,
+      {
+        description: `Harga termasuk PPh 0.25%: Rp ${formatRibuanInput(Math.round(withTax), true)}`,
+      }
+    );
   };
 
   return (
@@ -57,12 +90,37 @@ export function QuickConverter({ currentAntamPrice }: { currentAntamPrice: numbe
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
           <Coins className="h-5 w-5 text-[#C3A477]" />
-          Kalkulator Cepat
+          Kalkulator Cepat Emas
         </CardTitle>
-        <CardDescription>Estimasi konversi dana ke emas fisik (otomatis titik ribuan)</CardDescription>
+        <CardDescription className="text-xs">
+          Simulasi &amp; Estimasi Referensi Internal — Bukan Daftar Harga Resmi PT Antam Tbk.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
+          <div className="space-y-1.5">
+            <label
+              htmlFor="quick-conv-ref-1g"
+              className="text-xs font-medium text-muted-foreground uppercase tracking-wider"
+            >
+              Harga Acuan Simulasi 1g (IDR)
+            </label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm font-medium">
+                Rp
+              </span>
+              <input
+                id="quick-conv-ref-1g"
+                type="text"
+                inputMode="decimal"
+                value={refPriceText}
+                onChange={(e) => handleRefPriceChange(e.target.value)}
+                className="auto-ribuan w-full bg-background/80 border border-border rounded-lg py-2 pl-9 pr-3 text-sm focus:outline-none focus:border-[#C3A477] text-foreground font-mono font-semibold"
+                placeholder="2.725.000"
+              />
+            </div>
+          </div>
+
           <div className="space-y-2">
             <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Punya Dana (IDR)

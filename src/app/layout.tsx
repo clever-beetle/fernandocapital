@@ -15,31 +15,34 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://fernando-capital.vercel.app"),
-  title: "Fernando Capital | Premium Financial Dashboard",
-  description: "Real-time gold tracker, stock ratio calculator, and financial news dashboard tailored for professional investors.",
+  metadataBase: new URL("https://fernandocapital.web.id"),
+  title: "Fernando Capital | Financial Intelligence & Equity Research",
+  description:
+    "Independent Financial Intelligence, Equity Research & Deterministic Valuation Platform.",
   manifest: "/manifest.json",
+  alternates: {
+    canonical: "https://fernandocapital.web.id",
+  },
   icons: {
     icon: [
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-    ],
+    apple: [{ url: "/icon-192.png", sizes: "192x192", type: "image/png" }],
     shortcut: ["/icon-192.png"],
   },
   openGraph: {
     title: "Fernando Capital",
-    description: "Professional financial dashboard and real-time gold tracker.",
+    description:
+      "Independent Financial Intelligence, Equity Research & Deterministic Valuation Platform.",
     type: "website",
-    url: "https://fernando-capital.vercel.app",
+    url: "https://fernandocapital.web.id",
     siteName: "Fernando Capital",
     images: [
       {
         url: "/logo.png",
-        width: 574,
-        height: 197,
+        width: 852,
+        height: 306,
         alt: "Fernando Capital Logo",
       },
     ],
@@ -47,7 +50,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Fernando Capital",
-    description: "Professional financial dashboard and real-time gold tracker.",
+    description:
+      "Independent Financial Intelligence, Equity Research & Deterministic Valuation Platform.",
     images: ["/logo.png"],
   },
 };
@@ -60,8 +64,10 @@ export default function RootLayout({
   const versionInfo = getVersionInfo(false);
 
   return (
-    <html lang="id" suppressHydrationWarning>
-      <body className={`${jakarta.variable} flex min-h-screen flex-col bg-background text-foreground`}>
+    <html lang="id" className="overflow-x-clip" suppressHydrationWarning>
+      <body
+        className={`${jakarta.variable} flex min-h-screen flex-col bg-background text-foreground overflow-x-clip`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
@@ -70,10 +76,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header appVersion={versionInfo.version} />
-          <main className="flex-1">
-            <div className="container mx-auto py-8 px-4 md:px-8">
-              {children}
-            </div>
+          <main className="flex-1 min-w-0 w-full">
+            <div className="container mx-auto py-8 px-4 md:px-8">{children}</div>
           </main>
           <SystemProvider initialVersion={versionInfo.version} />
           <Toaster />

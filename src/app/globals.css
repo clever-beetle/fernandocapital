@@ -55,96 +55,96 @@
 }
 
 :root {
-  /* Palet Utama (Light Mode):
-     - Background utama: Warm Ivory #F4F0E7
-     - Teks utama: Graphite #242A32
-     - Logo utama / Primary: Midnight Navy #101B2C
-     - Logo alternatif / Aksen Emas: Champagne Gold #C3A477
-     - Elemen pendukung: Muted Taupe (#8C8275 / #EAE3D5) & Silver Mist (#D8E0E8)
+  /* Palet Utama (Light Mode — Modern Institutional Editorial Shadcn Theme):
+     - Background utama: Crisp Warm Alabaster #F8F6F1
+     - Card Surface: Pure Elevated Ivory White #FFFFFF
+     - Teks utama: Deep Graphite #0F172A
+     - Primary Brand: Midnight Navy #101B2C
+     - Aksen Emas: Champagne Gold #C3A477
   */
-  --background: #F4F0E7;
-  --foreground: #242A32;
-  --card: #FAF7F0;
-  --card-foreground: #242A32;
-  --popover: #FAF7F0;
-  --popover-foreground: #242A32;
+  --background: #F8F6F1;
+  --foreground: #0F172A;
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
   --primary: #101B2C;
-  --primary-foreground: #F4F0E7;
+  --primary-foreground: #F8F6F1;
   --gold: #C3A477;
   --navy: #101B2C;
-  --ivory: #F4F0E7;
-  --graphite: #242A32;
-  --taupe: #8C8275;
-  --silver-mist: #D8E0E8;
-  --secondary: #E6DEC8;
-  --secondary-foreground: #242A32;
-  --muted: #E6DEC8;
-  --muted-foreground: #5C5347;
-  --accent: #D8E0E8;
+  --ivory: #F8F6F1;
+  --graphite: #0F172A;
+  --taupe: #64748B;
+  --silver-mist: #E2E8F0;
+  --secondary: #EFECE4;
+  --secondary-foreground: #101B2C;
+  --muted: #EFECE4;
+  --muted-foreground: #525E70;
+  --accent: #E6E1D5;
   --accent-foreground: #101B2C;
-  --destructive: #B9382C;
-  --border: #CFC5B2;
-  --input: #CFC5B2;
+  --destructive: #DC2626;
+  --border: #DFD9CC;
+  --input: #DFD9CC;
   --ring: #C3A477;
   --chart-1: #C3A477;
-  --chart-2: #1E7A58;
+  --chart-2: #059669;
   --chart-3: #101B2C;
-  --chart-4: #8C8275;
-  --chart-5: #9AA6B5;
-  --radius: 0.625rem;
-  --sidebar: #EFE9DC;
-  --sidebar-foreground: #242A32;
+  --chart-4: #64748B;
+  --chart-5: #94A3B8;
+  --radius: 0.75rem;
+  --sidebar: #F3EFE6;
+  --sidebar-foreground: #0F172A;
   --sidebar-primary: #101B2C;
-  --sidebar-primary-foreground: #F4F0E7;
-  --sidebar-accent: #E4DCCB;
+  --sidebar-primary-foreground: #F8F6F1;
+  --sidebar-accent: #E8E2D4;
   --sidebar-accent-foreground: #101B2C;
-  --sidebar-border: #DCD3C2;
+  --sidebar-border: #DFD9CC;
   --sidebar-ring: #C3A477;
 }
 
 .dark {
-  /* Palet Gelap (Dark Mode):
-     - Background gelap: Midnight Navy #101B2C
-     - Teks utama: Warm Ivory #F4F0E7
-     - Logo alternatif / Primary: Champagne Gold #C3A477
-     - Elemen pendukung: Silver Mist (#B8C4D4 / #17263C) & Muted Taupe (#A69B8D)
+  /* Palet Gelap (Dark Mode — Institutional Terminal Midnight & Champagne Gold):
+     - Background gelap: Deep Midnight Obsidian #0A111D
+     - Card Surface: Elevated Navy Glass #111C2E
+     - Teks utama: Crisp Warm Ivory #F4F0E7
+     - Primary Brand: Champagne Gold #C3A477
   */
-  --background: #101B2C;
+  --background: #0A111D;
   --foreground: #F4F0E7;
-  --card: #17263D;
+  --card: #111C2E;
   --card-foreground: #F4F0E7;
-  --popover: #17263D;
+  --popover: #111C2E;
   --popover-foreground: #F4F0E7;
   --primary: #C3A477;
-  --primary-foreground: #101B2C;
+  --primary-foreground: #0A111D;
   --gold: #C3A477;
   --navy: #101B2C;
   --ivory: #F4F0E7;
-  --graphite: #242A32;
-  --taupe: #A69B8D;
-  --silver-mist: #B8C4D4;
-  --secondary: #1E314D;
+  --graphite: #1E293B;
+  --taupe: #94A3B8;
+  --silver-mist: #CBD5E1;
+  --secondary: #18273F;
   --secondary-foreground: #F4F0E7;
-  --muted: #1B2C46;
-  --muted-foreground: #B8C4D4;
-  --accent: #243A5A;
+  --muted: #16243A;
+  --muted-foreground: #9FB0C7;
+  --accent: #1E314E;
   --accent-foreground: #F4F0E7;
-  --destructive: #DC4C3E;
-  --border: #2C4160;
-  --input: #2C4160;
+  --destructive: #EF4444;
+  --border: #233654;
+  --input: #233654;
   --ring: #C3A477;
   --chart-1: #C3A477;
   --chart-2: #34D399;
-  --chart-3: #B8C4D4;
+  --chart-3: #94A3B8;
   --chart-4: #A69B8D;
   --chart-5: #F4F0E7;
-  --sidebar: #142236;
+  --sidebar: #0D1626;
   --sidebar-foreground: #F4F0E7;
   --sidebar-primary: #C3A477;
-  --sidebar-primary-foreground: #101B2C;
-  --sidebar-accent: #1B2C45;
+  --sidebar-primary-foreground: #0A111D;
+  --sidebar-accent: #17263D;
   --sidebar-accent-foreground: #F4F0E7;
-  --sidebar-border: #263954;
+  --sidebar-border: #223552;
   --sidebar-ring: #C3A477;
 }
 
@@ -153,9 +153,18 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased selection:bg-[#C3A477]/25 selection:text-foreground;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -15%, rgba(195, 164, 119, 0.14), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(16, 27, 44, 0.05), transparent);
+    background-attachment: fixed;
+  }
+  .dark body {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -15%, rgba(195, 164, 119, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(52, 211, 153, 0.04), transparent);
   }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
   }
 }

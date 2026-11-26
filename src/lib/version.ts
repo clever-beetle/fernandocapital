@@ -20,9 +20,9 @@ export interface VersionInfo {
   history: ReleaseHistoryItem[];
 }
 
-export const _BASE_VERSION = "1.6.0";
-export const _BASE_RELEASE_DATE = "2026-11-22";
-export const _BASE_CODENAME = "Platform 5 Pilar Financial Intelligence & AI Research Studio (70/30)";
+export const _BASE_VERSION = "1.7.0";
+export const _BASE_RELEASE_DATE = "2026-11-26";
+export const _BASE_CODENAME = "Desain Institutional Terminal shadcn/ui, Database-Backed Market Engine & Research CMS";
 export const _PUBLIC_CODENAME = "Rilis Stabil • Pembaruan Otomatis Aktif";
 
 const _BULAN_ID = [
@@ -42,6 +42,17 @@ const _BULAN_ID = [
 ];
 
 export const _BASE_RELEASE_HISTORY: ReleaseHistoryItem[] = [
+  {
+    version: "1.7.0",
+    date_id: "26 November 2026",
+    title: "Desain Institutional Terminal shadcn/ui, Database-Backed Market Engine & Research CMS",
+    highlights: [
+      "Merombak tampilan utama menggunakan komponen shadcn/ui modern (Card, Badge, Button, Table, Progress, Separator, Input, Sheet) dengan kontras tinggi pada mode terang (Warm Alabaster) dan mode gelap (Midnight Obsidian).",
+      "Menambahkan Telemetry Snapshot Card di Hero, indikator status Web Platform Active v1.7.0, tombol preset cepat harga acuan emas 1g, serta visualisasi Progress efisiensi harga/gram dan indeks Margin of Safety / ROE emiten.",
+      "Mengintegrasikan Financial Data Engine berbasis Neon PostgreSQL dengan sinkronisasi harian kurs referensi USD/IDR (ECB / Frankfurter) serta Database-Backed Research CMS dengan gerbang 30% Human Oversight.",
+      "Mengaktifkan HTTP Security Headers, proteksi autentikasi HMAC-SHA256, dan sistem Automated QA & Self-Healing Release Pipeline.",
+    ],
+  },
   {
     version: "1.6.0",
     date_id: "22 November 2026",

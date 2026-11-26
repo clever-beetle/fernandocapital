@@ -1,56 +1,62 @@
-import { NextResponse } from 'next/server';
-import { db } from '@/db';
-import { goldPrices } from '@/db/schema';
-import yahooFinance from 'yahoo-finance2';
+import { NextResponse } from "next/server";
+import { timingSafeEqualString } from "@/lib/auth";
+import { executeGoldSync } from "@/lib/gold-sync";
 
-const yf = new yahooFinance();
+export const dynamic = "force-dynamic";
 
-// Vercel Cron will hit this URL every 10 minutes
 export async function GET(request: Request) {
-  // --- KEAMANAN TINGKAT TINGGI (CRON SECRET) ---
-  const authHeader = request.headers.get('authorization');
-  if (
-    authHeader !== `Bearer ${process.env.CRON_SECRET}` && 
-    authHeader !== `Bearer fernando_12345`
-  ) {
-    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  // Fail-closed: require a non-empty server-side CRON_SECRET
+  const cronSecret = process.env.CRON_SECRET?.trim();
+  if (!cronSecret) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401, headers: { "Cache-Control": "no-store" } }
+    );
   }
 
-  try {
-    // 1. Fetch live Gold Futures (GC=F) from Yahoo Finance
-    const quoteGold = (await yf.quote('GC=F')) as any;
-    const currentPriceUsd = quoteGold.regularMarketPrice;
+  const authHeader = request.headers.get("authorization") || "";
+  const expectedHeader = `Bearer ${cronSecret}`;
 
-    // 2. Fetch live USD to IDR exchange rate
-    const quoteIdr = (await yf.quote('IDR=X')) as any;
-    const exchangeRateIdr = quoteIdr.regularMarketPrice;
-
-    if (!currentPriceUsd || !exchangeRateIdr) {
-      throw new Error("Could not fetch gold price or exchange rate");
-    }
-
-    // 3. Calculate Antam Price in IDR per gram
-    // 1 Troy Ounce = 31.1034768 grams
-    const rawPricePerGramIdr = (currentPriceUsd / 31.1034768) * exchangeRateIdr;
-    
-    // Add 5% premium for Antam physical minting (standard retail margin)
-    const antamPriceIdr = rawPricePerGramIdr * 1.05;
-
-    // 4. Save to Neon Database
-    await db.insert(goldPrices).values({
-      priceUsd: currentPriceUsd.toString(),
-      antamPriceIdr: antamPriceIdr.toString(),
-      source: 'Yahoo Finance',
-    });
-
-    return NextResponse.json({ 
-      success: true, 
-      priceUsd: currentPriceUsd, 
-      antamPriceIdr: Math.round(antamPriceIdr), 
-      time: new Date().toISOString() 
-    });
-  } catch (error: any) {
-    console.error("Cron Error:", error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  if (!timingSafeEqualString(authHeader, expectedHeader)) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401, headers: { "Cache-Control": "no-store" } }
+    );
   }
+
+  const result = await executeGoldSync({ cooldownSeconds: 60 });
+
+  if (result.status === "disabled") {
+    return NextResponse.json(
+      {
+        success: false,
+        status: "disabled",
+        code: result.code,
+        error: result.error,
+      },
+      { status: 503, headers: { "Cache-Control": "no-store" } }
+    );
+  }
+
+  if (result.status === "cooldown") {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Sync cooldown active",
+        retryAfterSeconds: result.retryAfterSeconds,
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(result.retryAfterSeconds),
+          "Cache-Control": "no-store",
+        },
+      }
+    );
+  }
+
+  return NextResponse.json(
+    { success: false, error: result.error },
+    { status: 500, headers: { "Cache-Control": "no-store" } }
+  );
 }

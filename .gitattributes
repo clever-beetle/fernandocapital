@@ -1,0 +1,3 @@
+# Preserve LF line endings on Drizzle SQL migrations so SHA-256 hashes never drift
+drizzle/*.sql text eol=lf
+*.sql text eol=lf

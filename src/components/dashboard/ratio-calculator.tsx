@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -20,39 +20,57 @@ import {
 import { toast } from "sonner";
 import { formatRibuanInput, parseRibuanInput } from "@/components/system/system-provider";
 import { COMPANY_RESEARCH_LIST } from "@/lib/intelligence-data";
+import { ANTAM_ALL_TIERS, calculateAntamTierPricing, DEFAULT_ANTAM_1G_IDR } from "@/lib/gold-pricing";
 
 type ToolTab = "valuation" | "ratios" | "compound" | "gold" | "comparison";
 
-const ANTAM_ALL_TIERS = [
-  { label: "0.5 gr", weight: 0.5, multiplier: 1.0367 },
-  { label: "1 gr", weight: 1, multiplier: 1.0 },
-  { label: "2 gr", weight: 2, multiplier: 0.989 },
-  { label: "3 gr", weight: 3, multiplier: 0.9859 },
-  { label: "5 gr", weight: 5, multiplier: 0.9835 },
-  { label: "10 gr", weight: 10, multiplier: 0.9815 },
-  { label: "25 gr", weight: 25, multiplier: 0.9796 },
-  { label: "50 gr", weight: 50, multiplier: 0.979 },
-  { label: "100 gr", weight: 100, multiplier: 0.9788 },
-  { label: "250 gr", weight: 250, multiplier: 0.9784 },
-  { label: "500 gr", weight: 500, multiplier: 0.9782 },
-  { label: "1000 gr", weight: 1000, multiplier: 0.9782 },
-];
-
-export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?: number }) {
+export function RatioCalculator({ liveAntamPrice = DEFAULT_ANTAM_1G_IDR }: { liveAntamPrice?: number }) {
   const searchParams = useSearchParams();
-  const [activeTab, setActiveTab] = useState<ToolTab>("valuation");
+  const paramTab = searchParams.get("tab") as ToolTab | null;
+  const initialTab: ToolTab =
+    paramTab && ["valuation", "ratios", "compound", "gold", "comparison"].includes(paramTab)
+      ? paramTab
+      : "valuation";
+  const [selectedTab, setSelectedTab] = useState<ToolTab | null>(null);
+  const activeTab = selectedTab ?? initialTab;
+  const setActiveTab = (tab: ToolTab) => setSelectedTab(tab);
+
+  const paramTicker = searchParams.get("ticker");
+  const matchedCompany = paramTicker
+    ? COMPANY_RESEARCH_LIST.find((c) => c.ticker === paramTicker.toUpperCase())
+    : undefined;
 
   // 1. Stock Valuation State
-  const [valPrice, setValPrice] = useState("6.850");
-  const [valEps, setValEps] = useState("628");
+  const [valPrice, setValPrice] = useState(() =>
+    matchedCompany ? formatRibuanInput(matchedCompany.price, true) : "6.850"
+  );
+  const [valEps, setValEps] = useState(() =>
+    matchedCompany
+      ? formatRibuanInput(Math.round(matchedCompany.price / matchedCompany.per), true)
+      : "628"
+  );
   const [valGrowth, setValGrowth] = useState("9,5");
   const [valYield, setValYield] = useState("6,68");
 
   // 2. Financial Ratio State
-  const [stockPrice, setStockPrice] = useState("6.850");
-  const [eps, setEps] = useState("628");
-  const [bvps, setBvps] = useState("2.915");
-  const [dps, setDps] = useState("356");
+  const [stockPrice, setStockPrice] = useState(() =>
+    matchedCompany ? formatRibuanInput(matchedCompany.price, true) : "6.850"
+  );
+  const [eps, setEps] = useState(() =>
+    matchedCompany
+      ? formatRibuanInput(Math.round(matchedCompany.price / matchedCompany.per), true)
+      : "628"
+  );
+  const [bvps, setBvps] = useState(() =>
+    matchedCompany
+      ? formatRibuanInput(Math.round(matchedCompany.price / matchedCompany.pbv), true)
+      : "2.915"
+  );
+  const [dps, setDps] = useState(() =>
+    matchedCompany
+      ? formatRibuanInput(Math.round((matchedCompany.price * matchedCompany.dividendYield) / 100), true)
+      : "356"
+  );
 
   // 3. Compound Interest State
   const [initialCapital, setInitialCapital] = useState("50.000.000");
@@ -69,28 +87,6 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
   // 5. Company Comparison State
   const [compareA, setCompareA] = useState("BMRI");
   const [compareB, setCompareB] = useState("BBCA");
-
-  useEffect(() => {
-    const tab = searchParams.get("tab") as ToolTab | null;
-    if (tab && ["valuation", "ratios", "compound", "gold", "comparison"].includes(tab)) {
-      setActiveTab(tab);
-    }
-    const ticker = searchParams.get("ticker");
-    if (ticker) {
-      const found = COMPANY_RESEARCH_LIST.find((c) => c.ticker === ticker.toUpperCase());
-      if (found) {
-        const estEps = Math.round(found.price / found.per);
-        const estBvps = Math.round(found.price / found.pbv);
-        const estDps = Math.round((found.price * found.dividendYield) / 100);
-        setValPrice(formatRibuanInput(found.price, true));
-        setValEps(formatRibuanInput(estEps, true));
-        setStockPrice(formatRibuanInput(found.price, true));
-        setEps(formatRibuanInput(estEps, true));
-        setBvps(formatRibuanInput(estBvps, true));
-        setDps(formatRibuanInput(estDps, true));
-      }
-    }
-  }, [searchParams]);
 
   // --- Deterministic Code Calculations ---
   // 1. Stock Valuation (Benjamin Graham / Growth-Adjusted Intrinsic Value)
@@ -131,11 +127,16 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
   const multiplier = totalPrincipal > 0 ? (totalFutureValue / totalPrincipal).toFixed(2) : "1.00";
 
   // 4. Gold Price Reference
-  const baseAntam1g = parseRibuanInput(goldRefPrice) || 2725000;
+  const baseAntam1g = parseRibuanInput(goldRefPrice) || DEFAULT_ANTAM_1G_IDR;
   const simGrams = parseRibuanInput(goldSimGram) || 1;
-  const simTotalBase = Math.round(baseAntam1g * simGrams);
-  const simTotalWithTax = Math.round(simTotalBase * 1.0025);
-  const simBuybackEst = Math.round(baseAntam1g * 0.945 * simGrams);
+  const matchedTierForSim = ANTAM_ALL_TIERS.find((t) => t.weight === simGrams);
+  const simPricing = calculateAntamTierPricing(
+    baseAntam1g,
+    simGrams,
+    matchedTierForSim ? matchedTierForSim.multiplier : 1.0
+  );
+  const simTotalWithTax = simPricing.taxPrice;
+  const simBuybackEst = simPricing.buybackEstimate;
 
   // 5. Company Comparison
   const compLeft = COMPANY_RESEARCH_LIST.find((c) => c.ticker === compareA) || COMPANY_RESEARCH_LIST[0];
@@ -189,20 +190,25 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
 
       {/* Preset Emiten Cepat (untuk Valuation & Ratios) */}
       {(activeTab === "valuation" || activeTab === "ratios") && (
-        <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card/70 px-4 py-2.5 text-xs">
-          <span className="font-mono text-muted-foreground uppercase text-[11px] mr-1">
-            Muat Data Emiten Tervalidasi:
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#C3A477]/45 bg-card/70 px-4 py-2.5 text-xs">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="font-mono text-muted-foreground uppercase text-[11px] mr-1">
+              Muat Preset Studi Kasus (Ilustrasi):
+            </span>
+            {COMPANY_RESEARCH_LIST.map((c) => (
+              <button
+                key={c.ticker}
+                type="button"
+                onClick={() => loadCompanyPreset(c.ticker)}
+                className="px-2.5 py-1 rounded-md border border-border bg-background hover:border-[#C3A477] font-mono font-semibold text-foreground transition-colors"
+              >
+                {c.ticker}
+              </button>
+            ))}
+          </div>
+          <span className="text-[11px] font-mono text-muted-foreground">
+            Studi Kasus Statis &amp; Preset Simulasi — Bukan Kuotasi Pasar Live BEI.
           </span>
-          {COMPANY_RESEARCH_LIST.map((c) => (
-            <button
-              key={c.ticker}
-              type="button"
-              onClick={() => loadCompanyPreset(c.ticker)}
-              className="px-2.5 py-1 rounded-md border border-border bg-background hover:border-[#C3A477] font-mono font-semibold text-foreground transition-colors"
-            >
-              {c.ticker}
-            </button>
-          ))}
         </div>
       )}
 
@@ -229,7 +235,7 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
           <CardContent className="grid gap-8 md:grid-cols-2">
             <div className="grid gap-5">
               <div className="grid gap-2">
-                <Label htmlFor="valPrice">Harga Saham Pasar Saat Ini (Rp)</Label>
+                <Label htmlFor="valPrice">Harga Acuan Studi Kasus (Ilustrasi Preset) (Rp)</Label>
                 <Input
                   id="valPrice"
                   type="text"
@@ -307,13 +313,13 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-xl border border-border bg-card p-4">
-                    <p className="text-xs text-muted-foreground">Harga Pasar</p>
+                    <p className="text-xs text-muted-foreground">Harga Acuan Studi Kasus (Ilustrasi Preset)</p>
                     <p className="text-xl font-bold font-mono text-foreground mt-1">
                       Rp {formatRibuanInput(vP, true) || "0"}
                     </p>
                   </div>
                   <div className="rounded-xl border border-[#C3A477] bg-card p-4">
-                    <p className="text-xs text-muted-foreground">Nilai Intrinsik Wajar</p>
+                    <p className="text-xs text-muted-foreground">Nilai Intrinsik Wajar (Simulasi)</p>
                     <p className="text-xl font-bold font-mono text-[#101B2C] dark:text-[#C3A477] mt-1">
                       Rp {formatRibuanInput(intrinsicVal, true) || "0"}
                     </p>
@@ -324,7 +330,7 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
                   <div>
                     <p className="text-xs font-semibold text-foreground">Margin of Safety (Diskon Valuasi)</p>
                     <p className="text-[11px] text-muted-foreground">
-                      Selisih antara nilai intrinsik dengan harga pasar saat ini
+                      Selisih antara nilai intrinsik simulasi dengan harga acuan studi kasus
                     </p>
                   </div>
                   <span
@@ -364,7 +370,7 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
           <CardContent className="grid gap-8 md:grid-cols-2">
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="price">Harga Saham Saat Ini (Rp)</Label>
+                <Label htmlFor="price">Harga Acuan Studi Kasus (Ilustrasi Preset) (Rp)</Label>
                 <Input
                   id="price"
                   type="text"
@@ -571,7 +577,8 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
               Gold Price Reference &amp; Antam Physical Bullion Calculator (0.5g – 1000g)
             </CardTitle>
             <CardDescription className="text-sm">
-              Referensi lengkap harga emas batangan fisik Antam seluruh pecahan beserta kalkulasi PPh 22 (0.25%)
+              Simulasi &amp; Estimasi Referensi Internal — Bukan Daftar Harga Resmi PT Antam Tbk.
+              Sesuaikan acuan harga 1 gram di bawah untuk menghitung seluruh pecahan beserta PPh 22 (0.25%)
               dan estimasi nilai buyback.
             </CardDescription>
           </CardHeader>
@@ -624,20 +631,22 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
                 </thead>
                 <tbody className="divide-y divide-border bg-card">
                   {ANTAM_ALL_TIERS.map((tier) => {
-                    const base = Math.round(baseAntam1g * tier.weight * tier.multiplier);
-                    const taxed = Math.round(base * 1.0025);
-                    const perGram = Math.round(taxed / tier.weight);
+                    const { basePrice, taxPrice, effectivePerGram } = calculateAntamTierPricing(
+                      baseAntam1g,
+                      tier.weight,
+                      tier.multiplier
+                    );
                     return (
                       <tr key={tier.label} className="hover:bg-secondary/40 transition-colors font-mono">
                         <td className="py-2.5 px-4 font-sans font-semibold text-foreground">{tier.label}</td>
                         <td className="py-2.5 px-4 text-right text-muted-foreground">
-                          {formatRibuanInput(base, true)}
+                          {formatRibuanInput(basePrice, true)}
                         </td>
                         <td className="py-2.5 px-4 text-right font-bold text-foreground">
-                          {formatRibuanInput(taxed, true)}
+                          {formatRibuanInput(taxPrice, true)}
                         </td>
                         <td className="py-2.5 px-4 text-right text-muted-foreground">
-                          {formatRibuanInput(perGram, true)}/g
+                          {formatRibuanInput(effectivePerGram, true)}/g
                         </td>
                       </tr>
                     );
@@ -660,7 +669,8 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
               Head-to-Head Company Fundamental &amp; Valuation Comparison
             </CardTitle>
             <CardDescription className="text-sm">
-              Bandingkan metrik valuasi, profitabilitas, struktur modal, dan margin of safety antar emiten secara
+              Studi Kasus Statis &amp; Preset Simulasi — Bukan Kuotasi Pasar Live BEI. Bandingkan metrik
+              valuasi, profitabilitas, struktur modal, dan margin of safety antar studi kasus emiten secara
               berdampingan.
             </CardDescription>
           </CardHeader>
@@ -726,7 +736,9 @@ export function RatioCalculator({ liveAntamPrice = 2725000 }: { liveAntamPrice?:
                     <td className="py-3 px-4 font-sans font-medium">{compRight.sector}</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-sans text-muted-foreground">Harga Saham Saat Ini</td>
+                    <td className="py-3 px-4 font-sans text-muted-foreground">
+                      Harga Acuan Studi Kasus (Ilustrasi Preset)
+                    </td>
                     <td className="py-3 px-4 font-bold">Rp {formatRibuanInput(compLeft.price, true)}</td>
                     <td className="py-3 px-4 font-bold">Rp {formatRibuanInput(compRight.price, true)}</td>
                   </tr>

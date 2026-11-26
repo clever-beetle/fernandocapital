@@ -156,8 +156,8 @@ export const COMPANY_RESEARCH_LIST: CompanyResearchItem[] = [
     earningsNote:
       "Pertumbuhan laba bersih ditopang ekspansi kredit korporasi & konsumer berkualitas tinggi serta efisiensi biaya dana.",
     macroSensitivity: "Diuntungkan oleh stabilitas daya beli domestik & likuiditas sistem perbankan.",
-    lastUpdated: "Q3/2026 • Terverifikasi Editor",
-    source: "Laporan Keuangan BEI & Riset Internal",
+    lastUpdated: "Studi Kasus Statis & Preset Simulasi — Bukan Kuotasi Pasar Live BEI.",
+    source: "Studi Kasus Fundamental & Preset Simulasi Valuasi Internal",
   },
   {
     ticker: "ANTM",
@@ -177,8 +177,8 @@ export const COMPANY_RESEARCH_LIST: CompanyResearchItem[] = [
     earningsNote:
       "Segmen emas menyumbang kontribusi pendapatan dominan dengan perputaran kas cepat dan margin distribusi yang solid.",
     macroSensitivity: "Korelasi positif tinggi terhadap kenaikan spot XAU/USD dan lindung nilai inflasi.",
-    lastUpdated: "Q3/2026 • Terverifikasi Editor",
-    source: "Laporan Keuangan BEI & Data Komoditas",
+    lastUpdated: "Studi Kasus Statis & Preset Simulasi — Bukan Kuotasi Pasar Live BEI.",
+    source: "Studi Kasus Fundamental & Preset Simulasi Valuasi Internal",
   },
   {
     ticker: "BMRI",
@@ -198,8 +198,8 @@ export const COMPANY_RESEARCH_LIST: CompanyResearchItem[] = [
     earningsNote:
       "Pendapatan berbasis komisi (fee-based income) dari ekosistem digital tumbuh dua digit mengimbangi normalisasi biaya dana.",
     macroSensitivity: "Sensitif terhadap siklus belanja modal korporasi dan penurunan suku bunga acuan.",
-    lastUpdated: "Q3/2026 • Terverifikasi Editor",
-    source: "Laporan Keuangan BEI & Riset Internal",
+    lastUpdated: "Studi Kasus Statis & Preset Simulasi — Bukan Kuotasi Pasar Live BEI.",
+    source: "Studi Kasus Fundamental & Preset Simulasi Valuasi Internal",
   },
   {
     ticker: "TLKM",
@@ -219,8 +219,8 @@ export const COMPANY_RESEARCH_LIST: CompanyResearchItem[] = [
     earningsNote:
       "Stabilisasi ARPU seluler dan efisiensi belanja modal pasca-integrasi IndiHome meningkatkan kapasitas pembagian dividen.",
     macroSensitivity: "Defensif terhadap fluktuasi komoditas; menarik saat imbal hasil obligasi melandai.",
-    lastUpdated: "Q3/2026 • Terverifikasi Editor",
-    source: "Laporan Keuangan BEI & Riset Internal",
+    lastUpdated: "Studi Kasus Statis & Preset Simulasi — Bukan Kuotasi Pasar Live BEI.",
+    source: "Studi Kasus Fundamental & Preset Simulasi Valuasi Internal",
   },
   {
     ticker: "ASII",
@@ -240,8 +240,8 @@ export const COMPANY_RESEARCH_LIST: CompanyResearchItem[] = [
     earningsNote:
       "Divisi jasa keuangan dan pertambangan emas menjadi penopang utama laba di tengah moderasi penjualan kendaraan roda empat.",
     macroSensitivity: "Terbantu apabila penurunan suku bunga menurunkan bunga kredit pembiayaan konsumen.",
-    lastUpdated: "Q3/2026 • Terverifikasi Editor",
-    source: "Laporan Keuangan BEI & Riset Internal",
+    lastUpdated: "Studi Kasus Statis & Preset Simulasi — Bukan Kuotasi Pasar Live BEI.",
+    source: "Studi Kasus Fundamental & Preset Simulasi Valuasi Internal",
   },
 ];
 
@@ -250,8 +250,8 @@ export const CONNECTED_MACRO_INSIGHTS: ConnectedMacroInsight[] = [
     id: "rate-cut-cycle",
     tag: "Central Bank Policy • Interest Rates",
     title: "Sinyal Pelonggaran Suku Bunga The Fed & Implikasinya terhadap BI-Rate",
-    date: "22 November 2026",
-    source: "Federal Reserve, Bank Indonesia & Konsensus Makro",
+    date: "Arsip Studi Kasus Editorial (22 November 2026)",
+    source: "Arsip Studi Kasus Transmisi Makro (Bukan Observasi Ekonomi Live)",
     summary:
       "Moderasi inflasi inti global membuka ruang penurunan suku bunga acuan secara bertahap. Biaya modal yang lebih rendah mengubah daya tarik relatif antara instrumen pasar uang, obligasi pemerintah, emas, dan ekuitas berdividen tinggi.",
     impacts: {
@@ -280,8 +280,8 @@ export const CONNECTED_MACRO_INSIGHTS: ConnectedMacroInsight[] = [
     id: "central-bank-gold-demand",
     tag: "Global Economy • Commodities",
     title: "Rekor Akumulasi Cadangan Emas Bank Sentral & Premi Fisik Domestik",
-    date: "22 November 2026",
-    source: "World Gold Council, LBMA & Antam Logam Mulia",
+    date: "Arsip Studi Kasus Editorial (22 November 2026)",
+    source: "Arsip Studi Kasus Komoditas & Lindung Nilai (Bukan Observasi Ekonomi Live)",
     summary:
       "Diversifikasi cadangan devisa oleh bank sentral negara berkembang menciptakan batas bawah struktural (structural floor) bagi harga emas global di tengah dinamika geopolitik dan defisit fiskal negara maju.",
     impacts: {
@@ -310,8 +310,8 @@ export const CONNECTED_MACRO_INSIGHTS: ConnectedMacroInsight[] = [
     id: "domestic-credit-consumption",
     tag: "Macroeconomic Analysis • Domestic Growth",
     title: "Ketahanan Konsumsi Domestik, Likuiditas Perbankan & Siklus Valuasi Emiten",
-    date: "21 November 2026",
-    source: "BPS, OJK & Riset Sektoral Fernando Capital",
+    date: "Arsip Studi Kasus Editorial (21 November 2026)",
+    source: "Arsip Studi Kasus Sektoral Fernando Capital (Bukan Observasi Ekonomi Live)",
     summary:
       "Pertumbuhan kredit produktif dan terjaganya rasio kredit bermasalah (NPL) perbankan nasional menopang pertumbuhan laba bersih emiten blue-chip meskipun pasar global mengalami volatilitas.",
     impacts: {
@@ -496,14 +496,14 @@ export const FIVE_AUTOMATED_SYSTEMS = [
   {
     id: "03",
     name: "Financial Data Engine",
-    status: "Live • 5-Min Sync",
+    status: "Daily EOD Reference Sync (ECB / Frankfurter)",
     description:
-      "Mengumpulkan dan mengolah data finansial deterministik dengan kode tervalidasi (bukan angka tebakan AI), lengkap dengan timestamp & sumber.",
+      "Mengumpulkan kurs referensi penutupan harian (USD/IDR via European Central Bank / Frankfurter) serta mengolah kalkulasi finansial deterministik dengan kode tervalidasi, lengkap dengan timestamp & sumber.",
     outputs: [
-      "Harga emas spot (XAU/USD) & fisik Antam",
-      "Indeks saham & kurs mata uang (USD/IDR)",
-      "Rasio keuangan & valuasi tervalidasi",
-      "Indikator makroekonomi berkala",
+      "Kurs referensi harian USD/IDR (ECB via Frankfurter • Non-JISDOR)",
+      "Simulator referensi emas fisik Antam (0.5g–1000g)",
+      "Rasio keuangan & valuasi deterministik tervalidasi",
+      "Status kepatuhan & ketersediaan indikator makroekonomi",
     ],
   },
   {

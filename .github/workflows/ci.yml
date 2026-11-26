@@ -1,51 +1,44 @@
-name: CI/CD Pipeline
+name: CI Validation Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "production" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "production" ]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Check types
-      run: npx tsc --noEmit
+      - name: Check TypeScript types
+        run: npx tsc --noEmit
 
-    - name: Run linter
-      run: npm run lint
+      - name: Run ESLint
+        run: npm run lint
 
-    - name: Build test
-      run: npm run build
-      env:
-        # Dummy DB URL to pass build-time checks if any
-        DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/postgres"
+      - name: Run Automated QA, Security, Compliance & Unit Test Gate
+        run: npm run qa -- --static-only
 
-    - name: 🚀 Auto Push to Production
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: |
-        git config user.name "Deploy Bot"
-        git config user.email "deploy@fernandocapital.web.id"
-        git checkout -B production
-        git push origin production --force
-        echo "✅ Deployed to production"
+      - name: Build production bundle
+        run: npm run build
+        env:
+          # Offline placeholder URL for build-time static route generation only (never a real credential)
+          DATABASE_URL: "postgresql://build_placeholder:build_placeholder@127.0.0.1:5432/build_placeholder"

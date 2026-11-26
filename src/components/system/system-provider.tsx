@@ -118,25 +118,10 @@ export function SystemProvider({ initialVersion }: { initialVersion: string }) {
     };
     window.addEventListener("beforeinstallprompt", onBeforeInstallPrompt);
 
-    // 4. Global Auto-Ribuan Input Delegation
-    const onInput = (e: Event) => {
-      const target = e.target as HTMLInputElement | null;
-      if (
-        target &&
-        target.tagName === "INPUT" &&
-        target.classList.contains("auto-ribuan") &&
-        target.type !== "number"
-      ) {
-        target.value = formatRibuanInput(target.value, false);
-      }
-    };
-    document.body.addEventListener("input", onInput);
-
     return () => {
       window.clearInterval(intervalId);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
-      document.body.removeEventListener("input", onInput);
     };
   }, [initialVersion, router]);
 
