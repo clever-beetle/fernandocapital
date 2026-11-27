@@ -20,9 +20,9 @@ export interface VersionInfo {
   history: ReleaseHistoryItem[];
 }
 
-export const _BASE_VERSION = "1.9.0";
+export const _BASE_VERSION = "2.0.0";
 export const _BASE_RELEASE_DATE = "2026-11-27";
-export const _BASE_CODENAME = "Desain Minimalis Calm Slate & Blue, Navigasi Bersih & Eksplorasi Bertab";
+export const _BASE_CODENAME = "Split Hero Interaktif, Grafik Kurva Emas Live & Visual Fintech v2.0";
 export const _PUBLIC_CODENAME = "Rilis Stabil • Pembaruan Otomatis Aktif";
 
 const _BULAN_ID = [
@@ -42,6 +42,16 @@ const _BULAN_ID = [
 ];
 
 export const _BASE_RELEASE_HISTORY: ReleaseHistoryItem[] = [
+  {
+    version: "2.0.0",
+    date_id: "27 November 2026",
+    title: "Split Hero Interaktif, Grafik Kurva Emas Live & Visual Fintech v2.0",
+    highlights: [
+      "Menghadirkan Split Hero baru dengan kartu floating Preview Valuasi Interaktif (BBCA, ANTM, BMRI), aksen gradient modern, dan latar Aurora halus.",
+      "Menambahkan grafik kurva interaktif Recharts pada Simulator Emas Antam yang memvisualisasikan penurunan harga efektif per gram (0.5g hingga 100g) secara live.",
+      "Memberikan aksen ikon berwarna yang segar pada setiap kartu indikator dan kalkulator serta banner call-to-action bergaya fintech modern.",
+    ],
+  },
   {
     version: "1.9.0",
     date_id: "27 November 2026",

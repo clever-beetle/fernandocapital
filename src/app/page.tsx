@@ -20,6 +20,7 @@ import { GoldChart } from "@/components/dashboard/gold-chart";
 import { QuickConverter } from "@/components/dashboard/quick-converter";
 import { CrossPillarExplorer } from "@/components/dashboard/cross-pillar-explorer";
 import { UsdIdrHistoryChart } from "@/components/dashboard/usd-idr-history-chart";
+import { HeroShowcase } from "@/components/dashboard/hero-showcase";
 import {
   ArrowUpRight,
   Calculator,
@@ -28,6 +29,10 @@ import {
   TrendingUp,
   Coins,
   Layers,
+  Globe,
+  Landmark,
+  CheckCircle2,
+  Sparkles,
 } from "lucide-react";
 import { getPublishedArticles } from "@/lib/research-cms";
 import {
@@ -83,52 +88,82 @@ export default async function Dashboard() {
   );
 
   return (
-    <div className="space-y-12 pb-12">
+    <div className="space-y-14 pb-12">
       {/* =====================================================================
-          1. CALM, SPACIOUS HERO SECTION
+          1. CATCHY SPLIT HERO SECTION (HEADLINE LEFT + FLOATING SHOWCASE RIGHT)
       ===================================================================== */}
-      <section className="py-4 sm:py-6 space-y-5 max-w-3xl">
-        <Badge
-          variant="secondary"
-          className="rounded-full px-3 py-1 text-xs font-medium text-foreground"
-        >
-          <span className="h-2 w-2 rounded-full bg-emerald-500 mr-2" />
-          Web Platform Active • v{versionInfo.version}
-        </Badge>
+      <section className="pt-2 sm:pt-4 grid gap-10 lg:grid-cols-12 items-center">
+        <div className="lg:col-span-7 space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/10 px-3.5 py-1 text-xs font-semibold text-blue-700 dark:text-blue-300">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span>Web Platform Active • v{versionInfo.version}</span>
+          </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.15]">
-          Riset Finansial, Kurs &amp; Kalkulator Valuasi yang Jernih.
-        </h1>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.12]">
+            Riset Finansial, Kurs &amp;{" "}
+            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 dark:from-blue-400 dark:via-indigo-400 dark:to-emerald-400 bg-clip-text text-transparent">
+              Kalkulator Valuasi yang Jernih.
+            </span>
+          </h1>
 
-        <p className="text-base text-muted-foreground leading-relaxed">
-          Pantau kurs referensi harian, simulasikan harga emas fisik, dan hitung
-          valuasi wajar saham Indonesia dalam satu tampilan yang bersih dan mudah dipahami.
-        </p>
+          <p className="text-base text-muted-foreground leading-relaxed max-w-xl">
+            Pantau kurs referensi harian ECB, simulasikan kurva harga emas fisik, dan
+            uji valuasi wajar saham Indonesia dengan mesin kalkulasi deterministik yang akurat.
+          </p>
 
-        <div className="flex flex-wrap items-center gap-3 pt-1">
-          <Link
-            href="/calculator"
-            className="inline-flex items-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-2.5 text-sm font-semibold shadow-xs hover:opacity-90 transition-opacity"
-          >
-            <Calculator className="w-4 h-4" />
-            <span>Buka Kalkulator Finansial</span>
-          </Link>
-          <Link
-            href="/research"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-card hover:bg-secondary px-5 py-2.5 text-sm font-medium text-foreground transition-colors"
-          >
-            <BookOpen className="w-4 h-4 text-muted-foreground" />
-            <span>Direktori Riset</span>
-          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/calculator"
+              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-5 py-3 text-sm font-semibold shadow-md shadow-blue-500/20 hover:-translate-y-0.5 transition-all"
+            >
+              <Calculator className="w-4 h-4" />
+              <span>Coba 5 Kalkulator Finansial</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/research"
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card hover:bg-secondary px-5 py-3 text-sm font-semibold text-foreground shadow-2xs transition-colors"
+            >
+              <BookOpen className="w-4 h-4 text-primary" />
+              <span>Direktori Riset</span>
+            </Link>
+          </div>
+
+          {/* Crisp 3-Stat Highlights */}
+          <div className="grid grid-cols-3 gap-3 pt-2 max-w-lg">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+              <span>Kurs Harian ECB</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
+              <span>5 Studi Kasus Saham</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0" />
+              <span>12 Pecahan Emas</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Floating Interactive Showcase Card */}
+        <div className="lg:col-span-5">
+          <HeroShowcase
+            formattedUsdIdr={formattedUsdIdr}
+            usdIdrDate={usdIdr.sourceDate}
+          />
         </div>
       </section>
 
       {/* =====================================================================
-          2. CLEAN 4-CARD MARKET SUMMARY
+          2. COLOR-CODED 4-CARD MARKET SUMMARY
       ===================================================================== */}
       <section id="market-intelligence" className="scroll-mt-24 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-foreground">
+          <h2 className="text-xl font-bold tracking-tight text-foreground">
             Ringkasan Indikator Pasar
           </h2>
           {usdIdr.fetchedAtFormattedWib && (
@@ -140,20 +175,26 @@ export default async function Dashboard() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {/* USD/IDR */}
-          <Card data-indicator-code="USD_IDR" className="border-border bg-card shadow-xs">
+          <Card
+            data-indicator-code="USD_IDR"
+            className="border-emerald-500/25 bg-gradient-to-b from-emerald-500/[0.06] to-card shadow-xs hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
+          >
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <CardDescription className="text-xs font-medium">
-                  Kurs USD/IDR (ECB)
-                </CardDescription>
+                <span className="p-2 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                  <Globe className="w-4 h-4" />
+                </span>
                 <Badge
                   variant="secondary"
-                  className="text-[11px] bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+                  className="text-[11px] bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
                 >
                   {usdIdr.freshnessLabel}
                 </Badge>
               </div>
-              <CardTitle className="text-2xl font-bold font-mono text-foreground pt-1">
+              <CardDescription className="text-xs font-medium pt-2">
+                Kurs USD/IDR (Ref. ECB)
+              </CardDescription>
+              <CardTitle className="text-2xl font-extrabold font-mono text-foreground">
                 {formattedUsdIdr || usdIdr.unavailableTitle || "Belum Tersedia"}
               </CardTitle>
             </CardHeader>
@@ -163,8 +204,8 @@ export default async function Dashboard() {
                   <p>
                     {usdIdr.trimmedDecimalValue} IDR per 1 USD • {usdIdr.sourceDate}
                   </p>
-                  <details className="pt-1">
-                    <summary className="cursor-pointer text-primary hover:underline">
+                  <details className="pt-0.5">
+                    <summary className="cursor-pointer font-medium text-primary hover:underline">
                       Detail sumber
                     </summary>
                     <div className="pt-1.5 space-y-0.5 text-[11px]">
@@ -180,17 +221,23 @@ export default async function Dashboard() {
           </Card>
 
           {/* IHSG */}
-          <Card data-indicator-code="IHSG" className="border-border bg-card shadow-xs">
+          <Card
+            data-indicator-code="IHSG"
+            className="border-border bg-card shadow-xs hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
+          >
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <CardDescription className="text-xs font-medium">
-                  Indeks IHSG
-                </CardDescription>
+                <span className="p-2 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-400">
+                  <TrendingUp className="w-4 h-4" />
+                </span>
                 <Badge variant="secondary" className="text-[11px]">
                   {ihsg.freshnessLabel}
                 </Badge>
               </div>
-              <CardTitle className="text-base font-semibold text-foreground pt-1">
+              <CardDescription className="text-xs font-medium pt-2">
+                Indeks IHSG
+              </CardDescription>
+              <CardTitle className="text-base font-bold text-foreground">
                 {ihsg.numericValue !== null
                   ? ihsg.numericValue.toLocaleString("id-ID")
                   : ihsg.unavailableTitle}
@@ -202,19 +249,28 @@ export default async function Dashboard() {
           </Card>
 
           {/* BI-Rate & SBN 10Y */}
-          <Card data-indicator-code="BI_RATE_SBN_10Y" className="border-border bg-card shadow-xs">
+          <Card
+            data-indicator-code="BI_RATE_SBN_10Y"
+            className="border-border bg-card shadow-xs hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
+          >
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <CardDescription className="text-xs font-medium">
-                  BI-Rate &amp; SBN 10Y
-                </CardDescription>
+                <span className="p-2 rounded-xl bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">
+                  <Landmark className="w-4 h-4" />
+                </span>
                 <Badge variant="secondary" className="text-[11px]">
                   {biRate.freshnessLabel}
                 </Badge>
               </div>
-              <CardTitle className="text-base font-semibold text-foreground pt-1">
-                {biRate.trimmedDecimalValue !== null || sbn10y.trimmedDecimalValue !== null
-                  ? `${biRate.trimmedDecimalValue ?? "—"}% / ${sbn10y.trimmedDecimalValue ?? "—"}%`
+              <CardDescription className="text-xs font-medium pt-2">
+                BI-Rate &amp; SBN 10Y
+              </CardDescription>
+              <CardTitle className="text-base font-bold text-foreground">
+                {biRate.trimmedDecimalValue !== null ||
+                sbn10y.trimmedDecimalValue !== null
+                  ? `${biRate.trimmedDecimalValue ?? "—"}% / ${
+                      sbn10y.trimmedDecimalValue ?? "—"
+                    }%`
                   : biRate.unavailableTitle}
               </CardTitle>
             </CardHeader>
@@ -226,17 +282,23 @@ export default async function Dashboard() {
           </Card>
 
           {/* Spot Emas XAU/USD */}
-          <Card data-indicator-code="XAU_USD" className="border-border bg-card shadow-xs">
+          <Card
+            data-indicator-code="XAU_USD"
+            className="border-border bg-card shadow-xs hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
+          >
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <CardDescription className="text-xs font-medium">
-                  Spot Emas (XAU/USD)
-                </CardDescription>
+                <span className="p-2 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400">
+                  <Coins className="w-4 h-4" />
+                </span>
                 <Badge variant="secondary" className="text-[11px]">
                   {xauUsd.freshnessLabel}
                 </Badge>
               </div>
-              <CardTitle className="text-base font-semibold text-foreground pt-1">
+              <CardDescription className="text-xs font-medium pt-2">
+                Spot Emas (XAU/USD)
+              </CardDescription>
+              <CardTitle className="text-base font-bold text-foreground">
                 {xauUsd.numericValue !== null
                   ? `$${xauUsd.numericValue.toLocaleString("en-US")}`
                   : xauUsd.unavailableTitle}
@@ -250,7 +312,7 @@ export default async function Dashboard() {
           </Card>
         </div>
 
-        {/* Quiet Collapsible US Macro & Governance Info (Zero Visual Noise) */}
+        {/* Quiet Collapsible US Macro & Governance Info */}
         <details className="rounded-xl border border-border bg-card px-4 py-3 text-xs text-muted-foreground">
           <summary className="cursor-pointer font-medium text-foreground">
             Indikator Suku Bunga AS (FED_FUNDS &amp; US_10Y) &amp; Informasi Kepatuhan Sumber Data
@@ -302,11 +364,11 @@ export default async function Dashboard() {
       </section>
 
       {/* =====================================================================
-          3. CLEAN GOLD SIMULATION & EXCHANGE RATE SECTION
+          3. LIVE GOLD CURVE SIMULATOR & EXCHANGE RATE SECTION
       ===================================================================== */}
       <section className="space-y-6">
         <div className="grid gap-6 lg:grid-cols-12 items-start">
-          {/* Left 7 Cols: Gold Simulator */}
+          {/* Left 7 Cols: Gold Simulator with Live Recharts Curve */}
           <div id="tracker" className="lg:col-span-7">
             <GoldChart
               data={chartDataIdr}
@@ -322,10 +384,10 @@ export default async function Dashboard() {
             </div>
 
             <div id="pricelist">
-              <Card className="border-border bg-card shadow-xs">
+              <Card className="border-border bg-card shadow-sm">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-base font-semibold">
+                    <CardTitle className="text-base font-bold">
                       Referensi Fisik Antam
                     </CardTitle>
                     <Badge variant="secondary" className="text-[11px]">
@@ -354,13 +416,13 @@ export default async function Dashboard() {
                         );
                         return (
                           <TableRow key={i} className="text-xs font-mono">
-                            <TableCell className="font-sans font-medium py-2">
+                            <TableCell className="font-sans font-semibold py-2">
                               {tier.label}
                             </TableCell>
                             <TableCell className="text-right text-muted-foreground py-2">
                               {formatRupiah(basePrice).replace("Rp", "").trim()}
                             </TableCell>
-                            <TableCell className="text-right font-semibold py-2">
+                            <TableCell className="text-right font-bold py-2">
                               {formatRupiah(taxPrice).replace("Rp", "").trim()}
                             </TableCell>
                           </TableRow>
@@ -378,22 +440,22 @@ export default async function Dashboard() {
       </section>
 
       {/* =====================================================================
-          4. TABBED RESEARCH & EDUCATION EXPLORER (ONE CLEAN VIEW AT A TIME)
+          4. TABBED RESEARCH & EDUCATION EXPLORER
       ===================================================================== */}
       <CrossPillarExplorer />
 
       {/* =====================================================================
-          5. SIMPLE BOTTOM ROW: CALCULATORS & EDITORIAL RESEARCH
+          5. CALCULATORS & EDITORIAL RESEARCH + DARK GRADIENT CTA BANNER
       ===================================================================== */}
       <section className="grid gap-6 lg:grid-cols-12 items-start">
         <div className="lg:col-span-7 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="text-xl font-bold tracking-tight text-foreground">
               5 Kalkulator Finansial
             </h2>
             <Link
               href="/calculator"
-              className="text-xs font-medium text-primary hover:underline"
+              className="text-xs font-semibold text-primary hover:underline"
             >
               Buka semua →
             </Link>
@@ -406,30 +468,35 @@ export default async function Dashboard() {
                 title: "Valuasi Saham",
                 desc: "Nilai Intrinsik & Margin of Safety.",
                 icon: Scale,
+                tint: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
               },
               {
                 tab: "ratios",
                 title: "Rasio Keuangan",
                 desc: "PER, PBV, ROE & Dividend Yield.",
                 icon: Calculator,
+                tint: "bg-indigo-500/15 text-indigo-600 dark:text-indigo-400",
               },
               {
                 tab: "compound",
                 title: "Bunga Majemuk",
                 desc: "Simulasi pertumbuhan investasi bulanan.",
                 icon: TrendingUp,
+                tint: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
               },
               {
                 tab: "gold",
                 title: "Tabel Emas Lengkap",
                 desc: "Simulasi Antam 0.5g hingga 1000g.",
                 icon: Coins,
+                tint: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
               },
               {
                 tab: "comparison",
                 title: "Bandingkan 2 Saham",
                 desc: "Perbandingan rasio emiten berdampingan.",
                 icon: Layers,
+                tint: "bg-violet-500/15 text-violet-600 dark:text-violet-400",
               },
             ].map((tool) => {
               const Icon = tool.icon;
@@ -437,13 +504,13 @@ export default async function Dashboard() {
                 <Link
                   key={tool.tab}
                   href={`/calculator?tab=${tool.tab}`}
-                  className="group flex items-start gap-3 rounded-xl border border-border bg-card p-4 hover:border-primary/50 transition-colors shadow-2xs"
+                  className="group flex items-start gap-3.5 rounded-xl border border-border bg-card p-4 hover:border-primary/50 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
                 >
-                  <div className="p-2 rounded-lg bg-secondary text-primary shrink-0">
+                  <div className={`p-2.5 rounded-xl shrink-0 ${tool.tint}`}>
                     <Icon className="w-4 h-4" />
                   </div>
                   <div className="space-y-0.5">
-                    <div className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                    <div className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">
                       {tool.title}
                     </div>
                     <p className="text-xs text-muted-foreground">{tool.desc}</p>
@@ -456,12 +523,12 @@ export default async function Dashboard() {
 
         <div id="published-research" className="lg:col-span-5 scroll-mt-24 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-foreground">
+            <h2 className="text-xl font-bold tracking-tight text-foreground">
               Publikasi Riset
             </h2>
             <Link
               href="/research"
-              className="text-xs font-medium text-primary hover:underline"
+              className="text-xs font-semibold text-primary hover:underline"
             >
               Direktori riset →
             </Link>
@@ -470,7 +537,7 @@ export default async function Dashboard() {
           {latestResearch.length === 0 ? (
             <Card className="border-border bg-card shadow-xs">
               <CardHeader className="space-y-1.5">
-                <CardTitle className="text-base font-semibold">
+                <CardTitle className="text-base font-bold">
                   Belum Ada Riset Publik Terbaru
                 </CardTitle>
                 <CardDescription className="text-xs leading-relaxed">
@@ -518,6 +585,46 @@ export default async function Dashboard() {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* =====================================================================
+          6. MODERN FINTECH DARK GRADIENT CALLOUT BANNER
+      ===================================================================== */}
+      <section className="rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 text-white p-7 sm:p-10 shadow-xl relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-blue-500/20 blur-3xl"
+        />
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-xl">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-300">
+              <Sparkles className="w-4 h-4" />
+              70% AI &amp; Automation • 30% Human Oversight
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Siap Menghitung Valuasi Saham &amp; Strategi Aset Anda?
+            </h2>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              Gunakan 5 kalkulator deterministik kami untuk menguji skenario harga wajar saham, rasio keuangan, bunga majemuk, dan emas fisik secara instan.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 shrink-0">
+            <Link
+              href="/calculator"
+              className="inline-flex items-center gap-2 rounded-xl bg-white text-slate-900 hover:bg-slate-100 px-5 py-3 text-sm font-bold shadow-sm transition-colors"
+            >
+              <Calculator className="w-4 h-4 text-blue-600" />
+              <span>Mulai Simulasi</span>
+            </Link>
+            <Link
+              href="/studio"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 hover:bg-white/15 text-white px-5 py-3 text-sm font-semibold transition-colors"
+            >
+              <span>Research Studio</span>
+              <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

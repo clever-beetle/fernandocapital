@@ -55,7 +55,6 @@
 }
 
 :root {
-  /* Calm, Clean Shadcn Slate & Royal Blue Palette (Light Mode) */
   --background: #F8FAFC;
   --foreground: #0F172A;
   --card: #FFFFFF;
@@ -64,7 +63,7 @@
   --popover-foreground: #0F172A;
   --primary: #2563EB;
   --primary-foreground: #FFFFFF;
-  --gold: #2563EB;
+  --gold: #F59E0B;
   --navy: #0F172A;
   --ivory: #F8FAFC;
   --graphite: #0F172A;
@@ -81,11 +80,11 @@
   --input: #E2E8F0;
   --ring: #2563EB;
   --chart-1: #2563EB;
-  --chart-2: #059669;
-  --chart-3: #0F172A;
-  --chart-4: #64748B;
+  --chart-2: #10B981;
+  --chart-3: #F59E0B;
+  --chart-4: #6366F1;
   --chart-5: #94A3B8;
-  --radius: 0.75rem;
+  --radius: 0.875rem;
   --sidebar: #FFFFFF;
   --sidebar-foreground: #0F172A;
   --sidebar-primary: #2563EB;
@@ -97,17 +96,16 @@
 }
 
 .dark {
-  /* Calm, Clean Shadcn Deep Slate & Soft Sky Blue Palette (Dark Mode) */
-  --background: #090D16;
+  --background: #070B14;
   --foreground: #F8FAFC;
-  --card: #111827;
+  --card: #0F172A;
   --card-foreground: #F8FAFC;
-  --popover: #111827;
+  --popover: #0F172A;
   --popover-foreground: #F8FAFC;
   --primary: #3B82F6;
   --primary-foreground: #FFFFFF;
-  --gold: #3B82F6;
-  --navy: #090D16;
+  --gold: #FBBF24;
+  --navy: #070B14;
   --ivory: #F8FAFC;
   --graphite: #1E293B;
   --taupe: #94A3B8;
@@ -124,8 +122,8 @@
   --ring: #3B82F6;
   --chart-1: #3B82F6;
   --chart-2: #34D399;
-  --chart-3: #94A3B8;
-  --chart-4: #64748B;
+  --chart-3: #FBBF24;
+  --chart-4: #818CF8;
   --chart-5: #F8FAFC;
   --sidebar: #0F172A;
   --sidebar-foreground: #F8FAFC;
@@ -143,6 +141,16 @@
   }
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/15 selection:text-foreground;
+    background-image:
+      radial-gradient(ellipse 75% 42% at 50% -10%, rgba(37, 99, 235, 0.11), transparent),
+      radial-gradient(ellipse 45% 30% at 88% 8%, rgba(16, 185, 129, 0.08), transparent);
+    background-repeat: no-repeat;
+  }
+  .dark body {
+    background-image:
+      radial-gradient(ellipse 75% 42% at 50% -10%, rgba(59, 130, 246, 0.16), transparent),
+      radial-gradient(ellipse 45% 30% at 88% 8%, rgba(16, 185, 129, 0.10), transparent);
+    background-repeat: no-repeat;
   }
   html {
     @apply font-sans scroll-smooth;
